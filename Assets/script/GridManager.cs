@@ -1,93 +1,58 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GridManager : MonoBehaviour
 {
-    public int gridSize = 7; // 7x7 맵
-    public float tileSize = 1.0f; // 타일 크기
-    private Dictionary<Vector2Int, GridTile> gridTiles; // 타일 데이터 저장소
+    public Transform gridTilesParent; // GridTiles 부모 오브젝트
+    public Dictionary<Vector2Int, GridTile> gridTiles = new Dictionary<Vector2Int, GridTile>();
 
     void Start()
     {
-        CreateGrid();
+        InitializeGrid();
     }
 
-    void CreateGrid()
+    private void InitializeGrid()
     {
-        gridTiles = new Dictionary<Vector2Int, GridTile>();
-
-        // 격자를 중심에 배치
-        float offset = (gridSize - 1) * tileSize / 2;
-
-        for (int x = 0; x < gridSize; x++)
+        // GridTiles 부모 오브젝트에서 모든 자식 GridTile 찾기
+        foreach (Transform child in gridTilesParent)
         {
-            for (int z = 0; z < gridSize; z++)
+            GridTile tile = child.GetComponent<GridTile>();
+            if (tile == null)
             {
-                Vector2Int coordinates = new Vector2Int(x, z);
-                GridTile tile = new GridTile(coordinates);
-
-                // 타일의 월드 좌표 계산
-                float xPos = x * tileSize - offset;
-                float zPos = z * tileSize - offset;
-
-                // 시각적 디버깅용
-                Debug.DrawLine(new Vector3(xPos, 0, zPos), new Vector3(xPos, 0.1f, zPos), Color.green, 100f);
-
-                // 타일 저장
-                gridTiles[coordinates] = tile;
+                Debug.LogWarning($"'{child.name}'에 GridTile 스크립트가 없습니다. 무시됩니다.");
+                continue;
             }
+
+            Vector2Int coordinates = tile.gridCoordinates;
+
+            if (gridTiles.ContainsKey(coordinates))
+            {
+                Debug.LogWarning($"중복된 타일 좌표: {coordinates}. 해당 타일은 무시됩니다.");
+                continue;
+            }
+
+            gridTiles.Add(coordinates, tile);
+            Debug.Log($"타일 등록: 좌표 {coordinates}, 타입 {tile.tileType}");
         }
     }
 
     // 특정 좌표의 타일 가져오기
     public GridTile GetTile(Vector2Int coordinates)
     {
-        if (gridTiles.ContainsKey(coordinates))
+        if (gridTiles.TryGetValue(coordinates, out GridTile tile))
         {
-            return gridTiles[coordinates];
+            return tile;
         }
         return null;
     }
 
-    // 특정 좌표에 유닛 배치
-    public void PlaceUnitOnTile(Vector2Int coordinates, GameObject unit)
+    // 전체 타일 강조 해제
+    public void ResetHighlights()
     {
-        GridTile tile = GetTile(coordinates);
-        if (tile != null && !tile.isOccupied)
+        foreach (var tile in gridTiles.Values)
         {
-            tile.PlaceUnit(unit);
-            // 유닛을 월드 공간에 배치
-            unit.transform.position = new Vector3(
-                coordinates.x * tileSize - ((gridSize - 1) * tileSize / 2),
-                0,
-                coordinates.y * tileSize - ((gridSize - 1) * tileSize / 2)
-            );
-        }
-        else
-        {
-            Debug.Log("타일이 이미 점유되었거나 존재하지 않습니다.");
+            tile.Highlight(false);
         }
     }
-    void OnDrawGizmos()
-{
-    if (gridTiles == null) return;
-
-    Gizmos.color = Color.cyan;
-    foreach (var tile in gridTiles.Values)
-    {
-        Vector3 tilePosition = new Vector3(
-            tile.coordinates.x * tileSize - ((gridSize - 1) * tileSize / 2),
-            0,
-            tile.coordinates.y * tileSize - ((gridSize - 1) * tileSize / 2)
-        );
-
-        Gizmos.DrawWireCube(tilePosition, new Vector3(tileSize, 0.1f, tileSize));
-        if (tile.isOccupied)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawCube(tilePosition, new Vector3(tileSize * 0.8f, 0.1f, tileSize * 0.8f));
-        }
-    }
-}
 }
