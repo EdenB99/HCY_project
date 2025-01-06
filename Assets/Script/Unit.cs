@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    // 유닛의 주요 능력치
+    // 유닛의 상점 능력치
+    public string Name;
+    public int CostLevel;
+    public int StarLevel;
+
+    // 유닛의 전투 능력치
     public int maxHP;
     public int currentHP;
     public int maxSP;
@@ -17,13 +22,25 @@ public class Unit : MonoBehaviour
     public float lifesteal; // 피해 흡혈 (%)
     public int durability; // 내구력 (피해 감소율)
 
-    // 유닛의 상태
-    public bool isSelected = false;
-    public Vector2Int currentTile; // 현재 타일 좌표
+    // 유닛의 위치 및 좌표 데이터
+    [SerializeField]
+    private bool isSelected;
+    public bool IsSelected
+    {
+        get => isSelected;
+        set
+        {
+            isSelected = value; 
+            Highlight(value);
+        }
+    }
+    public Vector2Int currentGridTile; // 현재 타일 그리드 좌표
+    
 
     // 기술 및 시너지
     public string skillName; // 기술 이름
-    public string[] synergies; // 유닛의 시너지 배열
+    public UnitSynergie[] synergies; // 유닛의 시너지 배열
+    public UnitType type;
 
     private void Start()
     {
@@ -31,29 +48,10 @@ public class Unit : MonoBehaviour
         currentHP = maxHP;
         currentSP = 0;
     }
-
-    // 유닛 선택/해제 처리
-    public void SelectUnit()
+    private void OnMouseDown()
     {
-        if (isSelected)
-        {
-            DeselectUnit();
-        }
-        else
-        {
-            isSelected = true;
-            Highlight(true);
-            Debug.Log($"{name} 유닛 선택됨.");
-        }
+         SelectionManager.Instance.SelectUnit(this);
     }
-
-    public void DeselectUnit()
-    {
-        isSelected = false;
-        Highlight(false);
-        Debug.Log($"{name} 유닛 선택 해제됨.");
-    }
-
     // 강조 표시
     public void Highlight(bool highlight)
     {
@@ -61,11 +59,10 @@ public class Unit : MonoBehaviour
     }
 
     // 유닛 이동
-    public void MoveToTile(Vector2Int newTileCoordinates)
+    public void MoveToTile(Vector2Int TileGridPos, Vector3 TileWorldPos)
     {
-        currentTile = newTileCoordinates;
-        transform.position = new Vector3(newTileCoordinates.x, 0, newTileCoordinates.y);
-        Debug.Log($"{name} 유닛이 타일 {newTileCoordinates}로 이동.");
+        currentGridTile = TileGridPos;
+        transform.position = TileWorldPos;
     }
 
     // 공격 처리

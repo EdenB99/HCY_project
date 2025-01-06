@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,33 @@ public class SelectionManager : MonoBehaviour
     public static SelectionManager Instance { get; private set; }
 
     // 현재 선택된 유닛과 타일
-    public Unit selectedUnit = null;
-    public GridTile selectedTile = null;
+    [SerializeField]
+    private Unit selectedUnit = null;
+    public Unit SelectedUnit
+    {
+        get => selectedUnit;
+        set
+        {
+            if (selectedUnit != null)
+            {
+                selectedUnit.IsSelected = false; // 기존 선택 해제
+            }
+            selectedUnit = value;
+            if (selectedUnit != null) selectedUnit.IsSelected = true;
+        }
+    }
+    [SerializeField]
+    private GridTile selectedTile = null;
+    public GridTile SelectedTile
+    {
+        get => selectedTile;
+        set
+        {
+            if (selectedTile != null) selectedTile.IsSelected = false; // 기존 선택 해제
+            selectedTile = value;
+            if (selectedTile != null) selectedTile.IsSelected = true;
+        }
+    }
 
     private void Awake()
     {
@@ -22,96 +48,113 @@ public class SelectionManager : MonoBehaviour
             return;
         }
     }
-
-    // 유닛 선택
+    //유닛 선택
     public void SelectUnit(Unit unit)
     {
-        // 이미 선택된 유닛이 있을 경우 선택 해제
-        if (selectedUnit == unit)
+        if (SelectedUnit == unit)
         {
             Debug.Log($"유닛 {unit.name} 선택 해제");
-            DeselectUnit();
-            return;
+            SelectedUnit = null;
+
         }
-
-        // 이전 선택 상태 초기화
-        if (selectedUnit != null)
+        else if (SelectedUnit != null && SelectedUnit != unit)
         {
-            DeselectUnit();
-        }
-
-        // 새로운 유닛 선택
-        selectedUnit = unit;
-        Debug.Log($"유닛 {unit.name} 선택됨");
-        selectedUnit.Highlight(true);
-    }
-
-    // 타일 선택
-    public void SelectTile(GridTile tile)
-    {
-        // 이미 선택된 타일이 있을 경우 선택 해제
-        if (selectedTile == tile)
-        {
-            Debug.Log($"타일 {tile.gridCoordinates} 선택 해제");
-            DeselectTile();
-            return;
-        }
-
-        // 이전 선택 상태 초기화
-        if (selectedTile != null)
-        {
-            DeselectTile();
-        }
-
-        // 새로운 타일 선택
-        selectedTile = tile;
-        Debug.Log($"타일 {tile.gridCoordinates} 선택됨");
-        selectedTile.Highlight(true);
-    }
-
-    // 유닛 선택 해제
-    public void DeselectUnit()
-    {
-        if (selectedUnit != null)
-        {
-            selectedUnit.Highlight(false);
-            selectedUnit = null;
-        }
-    }
-
-    // 타일 선택 해제
-    public void DeselectTile()
-    {
-        if (selectedTile != null)
-        {
-            selectedTile.Highlight(false);
-            selectedTile = null;
-        }
-    }
-
-    // 타일 클릭 시 유닛 이동 처리
-    public void HandleTileClick(GridTile tile)
-    {
-        if (selectedUnit == null)
-        {
-            // 선택된 유닛이 없으면 타일 선택
-            SelectTile(tile);
+            if (SelectedUnit.currentGridTile != null && unit.currentGridTile != null)
+            {
+                Debug.Log($"유닛 {SelectedUnit.name}과 {unit.name}의 위치를 교환합니다.");
+                SwapUnits(SelectedUnit, unit); // 두 유닛의 위치를 교환
+                DeselectCurrent(); // 선택 상태 초기화
+            }
+            else {
+                Debug.Log($"유닛 {unit.name} 선택");
+                SelectedUnit = unit;
+                if (SelectedTile != null) BothObjectSelect();
+            }
         }
         else
         {
-            // 선택된 유닛이 있으면 유닛을 타일로 이동
-            if (!tile.isOccupied)
-            {
-                Debug.Log($"유닛 {selectedUnit.name}이 타일 {tile.gridCoordinates}로 이동");
-                tile.PlaceUnit(selectedUnit.gameObject); // 유닛 배치
-                selectedUnit.MoveToTile(tile.gridCoordinates); // 유닛 이동
-                DeselectUnit();
-                DeselectTile();
-            }
-            else
-            {
-                Debug.LogWarning($"타일 {tile.gridCoordinates}는 이미 점유됨. 이동 불가");
-            }
+            Debug.Log($"유닛 {unit.name} 선택");
+            SelectedUnit = unit;
+            if (SelectedTile != null) BothObjectSelect();
         }
     }
+
+
+    //타일 선택
+    public void SelectTile(GridTile tile)
+    {
+        if (SelectedTile == tile)
+        {
+            Debug.Log($"타일 {tile.gridCoordinates} 선택 해제");
+            SelectedTile = null;
+        } else
+        {
+            Debug.Log($"타일 {tile.gridCoordinates} 선택");
+            SelectedTile = tile;
+            if (SelectedUnit != null) BothObjectSelect();
+        }
+    }
+    private void BothObjectSelect()
+    {
+        Debug.Log($"유닛 {SelectedUnit.name}이 타일 {SelectedTile.gridCoordinates}로 이동");
+        MoveUnitToTile(SelectedUnit, SelectedTile); // 함수 호출
+        DeselectCurrent();
+
+    }
+    public void SwapUnits(Unit unitA, Unit unitB)
+    {
+        if (unitA == null || unitB == null)
+        {
+            Debug.LogWarning("교환하려는 유닛이 없음");
+            return;
+        }
+
+        GridTile tileA = GridManager.Instance.GetTile(unitA.currentGridTile);
+        GridTile tileB = GridManager.Instance.GetTile(unitB.currentGridTile);
+
+        tileA.RemoveUnit();
+        tileB.RemoveUnit();
+
+        if (tileA == null || tileB == null)
+        {
+            Debug.LogWarning("유닛이 배치된 타일이 없음");
+            return;
+        }
+
+        // 위치 교환
+        MoveUnitToTile(unitA, tileB);
+        MoveUnitToTile(unitB, tileA);
+
+        Debug.Log($"유닛 {unitA.name}와 유닛 {unitB.name}의 위치를 교환");
+    }
+
+    private void DeselectCurrent()
+    {
+        SelectedTile = null;
+        SelectedUnit = null;
+    }
+
+    private void MoveUnitToTile(Unit unit, GridTile targetTile)
+    {
+        if (unit == null || targetTile == null) return;
+
+        // 기존 타일의 유닛 정보 초기화
+        GridTile previousTile = GridManager.Instance.GetTile(unit.currentGridTile);
+        if (previousTile != null)
+        {
+            previousTile.RemoveUnit();
+        }
+
+        // 타일로 유닛 이동
+        Vector3 targetPosition = targetTile.transform.position + new Vector3(0, unit.transform.localScale.y / 2, 0);
+        unit.MoveToTile(targetTile.gridCoordinates, targetPosition);
+
+        // 새로운 타일 점유 상태 갱신
+        targetTile.PlaceUnit(unit.gameObject);
+    }
+
+
+    
+
+
 }

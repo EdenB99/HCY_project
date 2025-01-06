@@ -4,9 +4,24 @@ using System.Collections.Generic;
 
 public class GridManager : MonoBehaviour
 {
+    public static GridManager Instance { get; private set; }
+
     public Transform gridTilesParent; // GridTiles 부모 오브젝트
     public Dictionary<Vector2Int, GridTile> gridTiles = new Dictionary<Vector2Int, GridTile>();
-
+    private void Awake()
+    {
+        // 싱글톤 구현
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogError("GridManager가 두 개 이상 존재합니다. 이 스크립트는 하나만 존재해야 합니다.");
+            Destroy(gameObject);
+            return;
+        }
+    }
     void Start()
     {
         InitializeGrid();
@@ -46,8 +61,6 @@ public class GridManager : MonoBehaviour
         }
         return null;
     }
-
-    // 전체 타일 강조 해제
     public void ResetHighlights()
     {
         foreach (var tile in gridTiles.Values)
