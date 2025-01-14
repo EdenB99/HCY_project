@@ -608,6 +608,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GridTile1x1
       objectReference: {fileID: 0}
+    - target: {fileID: 1339373907629706379, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2688347932914547954, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2259,6 +2263,10 @@ PrefabInstance:
     - target: {fileID: 1339373907629706379, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: m_Name
       value: GridTile2x1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1339373907629706379, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2688347932914547954, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: m_LocalPosition.x
