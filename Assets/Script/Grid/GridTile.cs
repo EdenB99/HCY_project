@@ -67,12 +67,12 @@ public class GridTile : MonoBehaviour
             return false;
         }
         // 타일 타입에 따라 유닛 배치 가능 여부 확인
-        if (tileType == TileType.Melee && unit.type != UnitType.Melee)
+        if (tileType == TileType.Melee && unit.unitType != UnitType.Melee)
         {
             Debug.LogWarning("근접 유닛만 이 타일에 배치 가능합니다.");
             return false;
         }
-        if (tileType == TileType.Range && unit.type != UnitType.Range)
+        if (tileType == TileType.Range && unit.unitType != UnitType.Range)
         {
             Debug.LogWarning("원거리 유닛만 이 타일에 배치 가능합니다.");
             return false;

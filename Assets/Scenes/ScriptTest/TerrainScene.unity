@@ -177,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -338,7 +338,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -962,7 +962,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -1118,7 +1118,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -1912,7 +1912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -2146,7 +2146,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -2380,7 +2380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -2536,7 +2536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -4238,7 +4238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2138498763
 Transform:
   m_ObjectHideFlags: 0
