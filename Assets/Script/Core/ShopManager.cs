@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    public Text goldText; // 현재 골드 표시
-    public Text levelText; // 상점 레벨 및 경험치 표시
+    public TextMeshProUGUI goldText; // 현재 골드 표시
+    public TextMeshProUGUI levelText; // 상점 레벨 및 경험치 표시
     public Button rerollButton; // 리롤 버튼
     public Button levelUpButton; // 레벨업 버튼
     public Transform unitSlotParent; // 슬롯들이 배치될 부모 오브젝트
     public GameObject unitSlotPrefab; // 슬롯 프리팹
 
     private int gold = 10; // 초기 골드
-    private int shopLevel = 1; // 초기 상점 레벨
+    public int shopLevel = 1; // 초기 상점 레벨
     private int shopExperience = 0; // 초기 경험치
     private int maxShopLevel = 5; // 최대 레벨
     private List<UnitData> availableUnits; // 구매 가능한 유닛 리스트

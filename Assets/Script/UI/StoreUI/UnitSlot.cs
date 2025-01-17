@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UnitSlot : MonoBehaviour
 {
-    public Text unitNameText;
-    public Text costText;
+    public TextMeshProUGUI unitNameText;
+    public TextMeshProUGUI costText;
     public Image unitImage;
     public Button purchaseButton;
 
