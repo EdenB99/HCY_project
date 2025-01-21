@@ -15,8 +15,9 @@ MonoBehaviour:
   unitName: Test
   costLevel: 1
   starLevel: 1
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 6bab0de6f245c6d478c249b5516cc219, type: 3}
   synergies: 000000000b000000
+  type: 0
   maxHP: 10
   currentHP: 10
   maxSP: 10

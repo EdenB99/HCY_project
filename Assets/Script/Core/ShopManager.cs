@@ -4,39 +4,65 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public struct ShopInfo
+{
+    public int gold;        // 보유 골드
+    public int shopExp;     // 현재 경험치
+    public int turnGold;    // 턴당 얻는 골드
+    public int turnExp;     // 턴당 얻는 경험치
+    public int shopLevel;   // 상점 레벨
+    public int maxShopLevel; // 최대 레벨
+    public int expCost;     // 경험치 구매 비용
+    public int rerollCost;  // 리롤  구매 비용
+}
+
 public class ShopManager : MonoBehaviour
 {
-    public TextMeshProUGUI goldText; // 현재 골드 표시
-    public TextMeshProUGUI levelText; // 상점 레벨 및 경험치 표시
-    public Button rerollButton; // 리롤 버튼
-    public Button levelUpButton; // 레벨업 버튼
-    public Transform unitSlotParent; // 슬롯들이 배치될 부모 오브젝트
-    public GameObject unitSlotPrefab; // 슬롯 프리팹
+    [Header("Component")]
+    public TextMeshProUGUI goldText;
+    public TextMeshProUGUI levelText;
+    public TextMeshProUGUI expText;
+    public TextMeshProUGUI expCostText;
+    public TextMeshProUGUI rerollCostText;
+    public Button rerollButton;
+    public Button expButton;
+    public Transform unitSlotParent;
+    public GameObject unitSlotPrefab;
 
-    private int gold = 10; // 초기 골드
-    public int shopLevel = 1; // 초기 상점 레벨
-    private int shopExperience = 0; // 초기 경험치
-    private int maxShopLevel = 5; // 최대 레벨
-    private List<UnitData> availableUnits; // 구매 가능한 유닛 리스트
+    [Header("Shop Data")]
+    public ShopInfo shopData; // 구조체로 상점 데이터 관리
+
+    [Header("Experience Requirements")]
+    public List<int> expRequirements = new List<int>
+    {
+        2, 6, 10, 20, 36, 48, 76, 84, 120, 150 // 요구 경험치
+    };
+
+    [Header("UnitList")]
+    public List<UnitData> availableUnits;
 
     private void Start()
     {
-        // 버튼 이벤트 등록
         rerollButton.onClick.AddListener(RerollUnits);
-        levelUpButton.onClick.AddListener(LevelUpShop);
+        expButton.onClick.AddListener(LevelUpShop);
 
         UpdateShopUI();
         GenerateUnitSlots();
     }
 
-    // 상점 UI 업데이트
     private void UpdateShopUI()
     {
-        goldText.text = $"골드: {gold}";
-        levelText.text = $"레벨: {shopLevel} (EXP: {shopExperience})";
+        goldText.text = $"{shopData.gold}";
+        levelText.text = $"{shopData.shopLevel}";
+
+        int requiredExp = shopData.shopLevel <= shopData.maxShopLevel ? expRequirements[shopData.shopLevel - 1] : 0;
+        expText.text = $"{shopData.shopExp}/{requiredExp}";
+
+        expCostText.text = $"{shopData.expCost}";
+        rerollCostText.text = $"{shopData.rerollCost}";
     }
 
-    // 유닛 슬롯 생성
     private void GenerateUnitSlots()
     {
         foreach (Transform child in unitSlotParent)
@@ -44,7 +70,6 @@ public class ShopManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // 5개의 유닛 슬롯 생성
         for (int i = 0; i < 5; i++)
         {
             GameObject slot = Instantiate(unitSlotPrefab, unitSlotParent);
@@ -53,59 +78,58 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    // 리롤 버튼 클릭
     private void RerollUnits()
     {
-        if (gold < 2) // 리롤 비용
+        if (shopData.gold < shopData.rerollCost)
         {
             Debug.LogWarning("골드가 부족합니다!");
             return;
         }
 
-        gold -= 2;
+        shopData.gold -= shopData.rerollCost;
         GenerateUnitSlots();
         UpdateShopUI();
     }
 
-    // 레벨업 버튼 클릭
     private void LevelUpShop()
     {
-        if (gold < 5 || shopLevel >= maxShopLevel)
+        if (shopData.gold < shopData.expCost || shopData.shopLevel >= shopData.maxShopLevel)
         {
             Debug.LogWarning("레벨업 불가능합니다.");
             return;
         }
 
-        gold -= 5;
-        shopExperience += 1;
+        shopData.gold -= shopData.expCost;
+        shopData.shopExp += 1;
 
-        // 경험치가 일정 수치를 넘으면 레벨 증가
-        if (shopExperience >= 3)
+        int requiredExp = expRequirements[shopData.shopLevel - 1];
+        if (shopData.shopExp >= requiredExp)
         {
-            shopLevel++;
-            shopExperience = 0;
+            shopData.shopLevel++;
+            shopData.shopExp -= requiredExp;
         }
 
         UpdateShopUI();
     }
 
-    // 유닛 리스트에서 랜덤 유닛 선택
     private UnitData GetRandomUnit()
     {
         return availableUnits[Random.Range(0, availableUnits.Count)];
     }
 
-    // 유닛 구매
-    public void PurchaseUnit(UnitData unit)
+    public void PurchaseUnit(UnitSlot clickedSlot)
     {
-        if (gold < unit.costLevel)
+        UnitData unit = clickedSlot.unitData;
+        if (shopData.gold < unit.costLevel)
         {
             Debug.LogWarning("골드가 부족합니다!");
             return;
         }
 
-        gold -= unit.costLevel;
+        shopData.gold -= unit.costLevel;
         Debug.Log($"유닛 {unit.name}을(를) 구매했습니다!");
+
+        clickedSlot.gameObject.SetActive(false);
         UpdateShopUI();
     }
 }

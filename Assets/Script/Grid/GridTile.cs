@@ -24,9 +24,6 @@ public class GridTile : MonoBehaviour
     public Vector2Int gridCoordinates; // 타일의 그리드 좌표
     public GameObject occupant = null; // 타일 위의 유닛
 
-
-
-
     private bool isSelected;
     public bool IsSelected
     {

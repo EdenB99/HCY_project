@@ -6,23 +6,30 @@ using UnityEngine.UI;
 
 public class UnitSlot : MonoBehaviour
 {
+    [Header("Component")]
     public TextMeshProUGUI unitNameText;
     public TextMeshProUGUI costText;
     public Image unitImage;
     public Button purchaseButton;
+    public Transform synergySlotfirst;
+    public Transform synergySlotsecond;
+    public Transform synergySlotthird;
 
-    private UnitData unit;
+    [Header("Data")]
+    public UnitData unitData;
     private ShopManager shopManager;
 
     // 슬롯 초기화
-    public void Setup(UnitData unitData, ShopManager manager)
+    public void Setup(UnitData unitdata, ShopManager manager)
     {
-        unit = unitData;
+        unitData = unitdata;
         shopManager = manager;
 
-        unitNameText.text = unit.name;
-        costText.text = $"{unit.costLevel} 골드";
-        unitImage.sprite = unit.image;
-        purchaseButton.onClick.AddListener(() => shopManager.PurchaseUnit(unit));
+        unitNameText.text = unitData.unitName;
+        costText.text = $"{unitData.costLevel}";
+        unitImage.sprite = unitData.image;
+        purchaseButton.onClick.RemoveAllListeners();
+        purchaseButton.onClick.AddListener(() => shopManager.PurchaseUnit(this));
+
     }
 }

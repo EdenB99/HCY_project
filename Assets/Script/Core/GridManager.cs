@@ -48,7 +48,6 @@ public class GridManager : MonoBehaviour
             }
 
             gridTiles.Add(coordinates, tile);
-            Debug.Log($"타일 등록: 좌표 {coordinates}, 타입 {tile.tileType}");
         }
     }
 
