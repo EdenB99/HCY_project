@@ -9,6 +9,7 @@ public class Gamemanager : MonoBehaviour
     //관리할 매니저
     public GridManager gridManager;
     public SelectionManager selectionManager;
+    public ShopManager shopManager;
 
     private void Awake()
     {
@@ -31,10 +32,10 @@ public class Gamemanager : MonoBehaviour
     {
         if (gridManager == null)
             Debug.LogError("GridManager가 미설정");
-
         if (selectionManager == null)
             Debug.LogError("selectionManager가 미설정");
-
+        if (shopManager == null)
+            Debug.LogError("ShopManager가 미설정되었습니다.");
         Debug.Log("GameManager 초기화 완료");
 
     }

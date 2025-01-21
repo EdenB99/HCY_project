@@ -134,11 +134,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -212,7 +212,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -290,11 +290,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -368,11 +368,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -446,7 +446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -524,11 +524,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -602,11 +602,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -680,11 +680,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -758,11 +758,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 3
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -836,11 +836,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -914,11 +914,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -996,7 +996,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1070,11 +1070,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1148,11 +1148,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1226,11 +1226,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1304,11 +1304,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1382,11 +1382,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1460,11 +1460,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1542,7 +1542,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1620,7 +1620,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1694,11 +1694,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 3
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1772,11 +1772,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 3
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1850,11 +1850,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -1928,11 +1928,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2010,7 +2010,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2088,7 +2088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2162,11 +2162,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2240,7 +2240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -2318,11 +2318,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 3
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2400,7 +2400,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2478,7 +2478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2552,11 +2552,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2630,11 +2630,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2708,11 +2708,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2786,11 +2786,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2864,11 +2864,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -2942,11 +2942,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -3020,11 +3020,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -3098,11 +3098,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -3176,7 +3176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -3254,11 +3254,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -3332,11 +3332,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -3410,11 +3410,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -3488,11 +3488,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -3566,11 +3566,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -3644,7 +3644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -3722,11 +3722,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x
@@ -3800,7 +3800,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: tileType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
@@ -3882,7 +3882,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: unlockLevel
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3997669155753760474, guid: 9aea0cd5a437f344baf3a00f0b3394d7, type: 3}
       propertyPath: gridCoordinates.x

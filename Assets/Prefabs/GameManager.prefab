@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 7937146613394309625}
   selectionManager: {fileID: 397262027597336816}
+  shopManager: {fileID: 0}
 --- !u!114 &7937146613394309625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,10 +61,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d28d2a077626c4cb21a6c8f670dc31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 7
-  tileSize: 1
-  gridTilePrefab: {fileID: 0}
-  gridCenter: {x: 0, y: 0, z: 0}
+  defaultMaterial: {fileID: 2100000, guid: b4ffdfc26b2256242a3e3e1679735b33, type: 2}
+  LockMaterial: {fileID: 2100000, guid: fa6eeb8dafa657b438dd84512eed9f25, type: 2}
+  meleeMaterial: {fileID: 2100000, guid: cc57d79234c9dcd49bbb78c6f5c6b56d, type: 2}
+  rangeMaterial: {fileID: 2100000, guid: dc931963b294cf44da816f85ddb999f0, type: 2}
+  outlineMaterial: {fileID: 2100000, guid: 549e03b60f95b6e43b4d8267a99fbdfd, type: 2}
+  WaveMaterial: {fileID: 2100000, guid: ef293371ed77f52448b7d8ea09dbe0cb, type: 2}
+  SpecialMaterial: {fileID: 2100000, guid: a2d2783e42ce3904291518199d051d36, type: 2}
+  lockedMaterial: {fileID: 2100000, guid: fa6eeb8dafa657b438dd84512eed9f25, type: 2}
+  transparentMaterial: {fileID: 2100000, guid: ad0c439e26fd0d440816d5aac65c67a3, type: 2}
+  gridTilesParent: {fileID: 0}
 --- !u!114 &397262027597336816
 MonoBehaviour:
   m_ObjectHideFlags: 0

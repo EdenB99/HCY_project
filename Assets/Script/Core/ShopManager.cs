@@ -19,6 +19,8 @@ public struct ShopInfo
 
 public class ShopManager : MonoBehaviour
 {
+    public static ShopManager Instance { get; private set; }
+
     [Header("Component")]
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI levelText;
@@ -42,6 +44,16 @@ public class ShopManager : MonoBehaviour
     [Header("UnitList")]
     public List<UnitData> availableUnits;
 
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else
+        {
+            Debug.LogError("ShopManager가 두 개 이상 존재합니다.");
+            Destroy(gameObject);
+            return;
+        }
+    }
     private void Start()
     {
         rerollButton.onClick.AddListener(RerollUnits);
@@ -56,7 +68,8 @@ public class ShopManager : MonoBehaviour
         goldText.text = $"{shopData.gold}";
         levelText.text = $"{shopData.shopLevel}";
 
-        int requiredExp = shopData.shopLevel <= shopData.maxShopLevel ? expRequirements[shopData.shopLevel - 1] : 0;
+        int requiredExp = shopData.shopLevel <= shopData.maxShopLevel ?
+            expRequirements[shopData.shopLevel - 1] : 0;
         expText.text = $"{shopData.shopExp}/{requiredExp}";
 
         expCostText.text = $"{shopData.expCost}";

@@ -9,20 +9,23 @@ public class GridTile : MonoBehaviour
     public enum TileType
     {
         Default,
+        Lock,
         Melee,
-        Outline,
         Range,
+        Outline,
         WaveIn,
         WaveOut,
         Special,
     }
 
-    // 타일의 기본 데이터
-    
+
+    [Header("TileData")]
     public TileType tileType = TileType.Default; // 타일의 타입
     public int unlockLevel;   // 타일이 공개되는 레벨
     public Vector2Int gridCoordinates; // 타일의 그리드 좌표
     public GameObject occupant = null; // 타일 위의 유닛
+
+    private Renderer tileRenderer;
 
     private bool isSelected;
     public bool IsSelected
@@ -31,12 +34,26 @@ public class GridTile : MonoBehaviour
         set
         {
             isSelected = value;
-            Highlight(value);
         }
     }
-
-    
-    // 타일 클릭 처리
+    private void Awake()
+    {
+        tileRenderer = GetComponent<Renderer>();
+    }
+    /// <summary>
+    /// 타일 업데이트
+    /// </summary>
+    /// <param name="material">변경될 메터리얼</param>
+    public void UpdateMaterial(Material material)
+    {
+        if (tileRenderer != null && material != null)
+        {
+            tileRenderer.material = material;
+        }
+    }
+    /// <summary>
+    /// 타일 클릭 처리
+    /// </summary>
     private void OnMouseDown()
     {
         if (occupant != null) // 유닛이 존재하면 유닛을 선택
@@ -48,7 +65,12 @@ public class GridTile : MonoBehaviour
             SelectionManager.Instance.SelectTile(this);
         }
     }
-    // 현재 타일에 유닛을 배치할 수 있는지 확인
+    /// <summary>
+    /// 타일이 변경될 수 있는지 확인
+    /// </summary>
+    /// <param name="unit">배치될 유닛</param>
+    /// <param name="currentLevel">현재 상점레벨</param>
+    /// <returns></returns>
     public bool PlaceUnit(Unit unit, int currentLevel)
     {
         // 배치 불가능한 타일이면
@@ -84,17 +106,12 @@ public class GridTile : MonoBehaviour
         occupant = unit.gameObject;
         return true;
     }
-
-
-    // 유닛 제거 메서드
+    /// <summary>
+    /// 유닛제거
+    /// </summary>
     public void RemoveUnit()
     {
         occupant = null;
     }
 
-    // 선택 상태 강조 표시
-    public void Highlight(bool highlight)
-    {
-        GetComponent<Renderer>().material.color = highlight ? Color.yellow : Color.white;
-    }
 }
