@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d23ad2e2a514849862ee5ab0a5cb20, type: 3}
+  m_Name: TestConfig
+  m_EditorClassIdentifier: 
+  ShopInfo:
+    gold: 30
+    shopExp: 0
+    turnGold: 5
+    turnExp: 5
+    shopLevel: 1
+    maxShopLevel: 5
+    expCost: 5
+    rerollCost: 5
+    gainExp: 5
+    UnitSlotNum: 5
+    unitRatesByLevel:
+    - shopLevel: 1
+      expRequirement: 6
+      rates:
+      - costLevel: 1
+        spawnRate: 1
+    - shopLevel: 2
+      expRequirement: 16
+      rates:
+      - costLevel: 1
+        spawnRate: 0.8
+      - costLevel: 2
+        spawnRate: 0.2
+    - shopLevel: 3
+      expRequirement: 24
+      rates:
+      - costLevel: 1
+        spawnRate: 0.8
+      - costLevel: 2
+        spawnRate: 0.3
+      - costLevel: 3
+        spawnRate: 0.1
+    - shopLevel: 4
+      expRequirement: 36
+      rates:
+      - costLevel: 1
+        spawnRate: 0.4
+      - costLevel: 2
+        spawnRate: 0.4
+      - costLevel: 3
+        spawnRate: 0.2
+    - shopLevel: 5
+      expRequirement: 48
+      rates:
+      - costLevel: 1
+        spawnRate: 0.2
+      - costLevel: 2
+        spawnRate: 0.5
+      - costLevel: 3
+        spawnRate: 0.3
+    availableUnits:
+    - {fileID: 11400000, guid: 8a415ddd47c6a62489bb75da35ea3e34, type: 2}
+    - {fileID: 11400000, guid: 44026edd680e95f4e849984d235b813f, type: 2}
+    - {fileID: 11400000, guid: a0fd42ebc38f51149bca98e49b977f6f, type: 2}
