@@ -2,11 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SynergyManager : MonoBehaviour
-{
-    public static SynergyManager Instance { get; private set; }
 
-    private Dictionary<Vector2Int, Unit> tileUnits = new Dictionary<Vector2Int, Unit>(); // 타일별 유닛
-    private HashSet<UnitSynergie> activeSynergies = new HashSet<UnitSynergie>(); // 활성화된 시너지
-    private int totalUnits = 0; // 배치된 총 유닛 수
+public class SynergieManager : MonoBehaviour
+{
+    public static SynergieManager Instance { get; private set; }
+
+    [Header("Synergy Database")]
+    public List<SynergyDatabase> synergies = new List<SynergyDatabase>();
+
+    
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+    }
+
+    /// <summary>
+    /// 유닛이 추가되었을 때 관련된 시너지 업데이트
+    /// </summary>
+    public void AddUnitToSynergies(Unit unit)
+    {
+        foreach (var synergy in unit.unitData.synergyList)
+        {
+            synergy.AddUnit(unit);
+        }
+    }
+    /// <summary>
+    /// 유닛이 제거되었을 때 관련된 시너지 업데이트
+    /// </summary>
+    public void RemoveUnitFromSynergies(Unit unit)
+    {
+        foreach (var synergy in unit.unitData.synergyList)
+        {
+            synergy.RemoveUnit(unit);
+        }
+    }
 }

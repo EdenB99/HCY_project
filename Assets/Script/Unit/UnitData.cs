@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum UnitType
+{
+    Melee,
+    Range,
+    Marshal
+}
+
 [CreateAssetMenu(fileName = "UnitData", menuName = "Unit/Create New Unit")]
 public class UnitData : ScriptableObject
 {
@@ -10,7 +17,7 @@ public class UnitData : ScriptableObject
     public int costLevel; // 유닛 가격
     public int starLevel; // 유닛 등급
     public Sprite image; // 유닛 이미지
-    public List<UnitSynergie> synergies; // 유닛 시너지 리스트
+    public List<SynergyDatabase> synergyList;
 
     [Header("Ingame Stats")]
     public UnitType type;
