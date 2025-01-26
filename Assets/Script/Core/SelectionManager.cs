@@ -7,10 +7,13 @@ public class SelectionManager : MonoBehaviour
 {
     public static SelectionManager Instance { get; private set; } // 싱글톤 인스턴스
     //유닛이 타일에 배치될 때 호출할 이벤트
+    private GridManager gridManager;
     public Action<Unit> onUnit;
-    // 현재 선택된 유닛
+
     [SerializeField]
     private Unit selectedUnit = null;
+    private GridTile selectedTile = null;
+
     public Unit SelectedUnit
     {
         get => selectedUnit;
@@ -22,9 +25,6 @@ public class SelectionManager : MonoBehaviour
             UpdateTileMaterials();
         }
     }
-    // 현재 선택된 타일
-    [SerializeField]
-    private GridTile selectedTile = null;
     public GridTile SelectedTile
     {
         get => selectedTile;
@@ -47,6 +47,10 @@ public class SelectionManager : MonoBehaviour
             return;
         }
     }
+    private void Start()
+    {
+        gridManager = GridManager.Instance;
+    }
     /// <summary>
     /// 유닛을 선택했을 때 발생하는 메소드
     /// </summary>
@@ -66,7 +70,7 @@ public class SelectionManager : MonoBehaviour
             if (SelectedUnit.currentGridTile != null && unit.currentGridTile != null)
             {
                 Debug.Log($"유닛 {SelectedUnit.name}과 {unit.name}의 위치를 교환합니다.");
-                SwapUnits(SelectedUnit, unit); // 유닛 교환
+                gridManager.SwapUnits(SelectedUnit, unit);
                 DeselectCurrent();
                 return;
             }
@@ -98,55 +102,9 @@ public class SelectionManager : MonoBehaviour
     private void BothObjectSelect()
     {
         Debug.Log($"유닛 {SelectedUnit.name}이 타일 {SelectedTile.gridCoordinates}로 이동시도");
-        MoveUnitToTile(SelectedUnit, SelectedTile); // 함수 호출
+        gridManager.MoveUnitToTile(selectedUnit, SelectedTile);
         DeselectCurrent();
     }
-    /// <summary>
-    /// 유닛과 유닛 위치 교환
-    /// </summary>
-    public void SwapUnits(Unit unitA, Unit unitB)
-    {
-        if (unitA == null || unitB == null)
-        {
-            Debug.LogWarning("교환하려는 유닛이 없음");
-            return;
-        }
-
-        GridTile tileA = GridManager.Instance.GetTile(unitA.currentGridTile);
-        GridTile tileB = GridManager.Instance.GetTile(unitB.currentGridTile);
-        tileA.RemoveUnit();
-        tileB.RemoveUnit();
-
-        if (tileA == null || tileB == null)
-        {
-            Debug.LogWarning("유닛이 배치된 타일이 없음");
-            return;
-        }
-
-        // 위치 교환
-        MoveUnitToTile(unitA, tileB);
-        MoveUnitToTile(unitB, tileA);
-        Debug.Log($"유닛 {unitA.name}와 유닛 {unitB.name}의 위치를 교환");
-    }
-    /// <summary>
-    /// 유닛을 타일로 이동
-    /// </summary>
-    private void MoveUnitToTile(Unit unit, GridTile targetTile)
-    {
-        //유닛이 없거나 타일이 없거나 현재 타일이 배치여부가 거부될 경우
-        if (unit == null || targetTile == null ||
-            !targetTile.PlaceUnit(unit, ShopManager.Instance.shopData.shopLevel)) return;
-        // 기존 타일의 유닛 정보 초기화
-        GridTile previousTile = GridManager.Instance.GetTile(unit.currentGridTile);
-        if (previousTile != null) previousTile.RemoveUnit();
-
-        // 타일로 유닛 이동
-        Vector3 targetPosition =
-            targetTile.transform.position + new Vector3(0, unit.transform.localScale.y / 2, 0);
-        unit.MoveToTile(targetTile.gridCoordinates, targetPosition);
-    }
-
-    //선택된 유닛,혹은 타일의 유닛을 제거
 
     /// <summary>
     /// 선택상태 초기화

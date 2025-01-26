@@ -63,20 +63,18 @@ public class UnitSlot : MonoBehaviour
             }
 
             // 슬롯 활성화
-           /* currentSlot.gameObject.SetActive(true);
+            currentSlot.gameObject.SetActive(true);
 
             // 아이콘 및 텍스트 업데이트
             var synergyIcon = currentSlot.GetComponentInChildren<Image>();
             var synergyText = currentSlot.GetComponentInChildren<TextMeshProUGUI>();
 
-            var synergy = unitData.synergyList[i];
-            var synergyData = SynergieManager.Instance.GetSynergyData(synergy);
-
+            SynergyDatabase synergyData = unitData.synergyList[i];
             if (synergyData != null)
             {
                 synergyIcon.sprite = synergyData.icon;
-                synergyText.text = synergyData.description;
-            }*/
+                synergyText.text = synergyData.synergyName;
+            }
         }
     }
 

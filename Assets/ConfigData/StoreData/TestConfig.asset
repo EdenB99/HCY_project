@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2d23ad2e2a514849862ee5ab0a5cb20, type: 3}
+  m_Script: {fileID: 11500000, guid: 4df52b6e096a56243a99d8507fe67ae9, type: 3}
   m_Name: TestConfig
   m_EditorClassIdentifier: 
   ShopInfo:
@@ -67,3 +67,6 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8a415ddd47c6a62489bb75da35ea3e34, type: 2}
     - {fileID: 11400000, guid: 44026edd680e95f4e849984d235b813f, type: 2}
     - {fileID: 11400000, guid: a0fd42ebc38f51149bca98e49b977f6f, type: 2}
+  synergies:
+  - {fileID: 11400000, guid: d668c7985f927c5468ef034581c93a02, type: 2}
+  - {fileID: 11400000, guid: 67ecc264e400e974cbbf0f3065f0a6c6, type: 2}

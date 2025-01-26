@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6950765818948163870}
   - component: {fileID: 547444020874690781}
   - component: {fileID: 397262027597336816}
-  - component: {fileID: 1581776646625089602}
   - component: {fileID: 7937146613394309625}
   m_Layer: 0
   m_Name: GameManager
@@ -47,9 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b633ad97655ea93459943e30347310b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameConfig: {fileID: 11400000, guid: 921907dd3acb99949aca091c2b360c26, type: 2}
   gridManager: {fileID: 7937146613394309625}
   selectionManager: {fileID: 397262027597336816}
   shopManager: {fileID: 0}
+  synergyManager: {fileID: 0}
 --- !u!114 &397262027597336816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,20 +64,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedUnit: {fileID: 0}
-  selectedTile: {fileID: 0}
---- !u!114 &1581776646625089602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2703349116887092716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb797ca9ab44f5a448d47e8ce3f7d64c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  synergieDataList: []
 --- !u!114 &7937146613394309625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,3 +86,4 @@ MonoBehaviour:
   lockedMaterial: {fileID: 2100000, guid: fa6eeb8dafa657b438dd84512eed9f25, type: 2}
   transparentMaterial: {fileID: 2100000, guid: ad0c439e26fd0d440816d5aac65c67a3, type: 2}
   gridTilesParent: {fileID: 0}
+  placedUnits: []

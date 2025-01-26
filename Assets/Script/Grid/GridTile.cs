@@ -18,7 +18,7 @@ public class GridTile : MonoBehaviour
         Special,
     }
 
-
+    
     [Header("TileData")]
     public TileType tileType = TileType.Default; // 타일의 타입
     public int unlockLevel;   // 타일이 공개되는 레벨
@@ -71,6 +71,7 @@ public class GridTile : MonoBehaviour
     /// <param name="unit">배치될 유닛</param>
     /// <param name="currentLevel">현재 상점레벨</param>
     /// <returns></returns>
+    
     public bool PlaceUnit(Unit unit, int currentLevel)
     {
         // 배치 불가능한 타일이면

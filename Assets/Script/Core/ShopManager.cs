@@ -41,9 +41,6 @@ public struct ShopInfo
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager Instance { get; private set; }
-    //미리 저장된 데이터 저장값
-    [Header("Shop Config")]
-    public ShopConfig shopConfig;
     //현재 사용되는 데이터
     [Header("Shop Data")]
     public ShopInfo shopData;
@@ -74,20 +71,19 @@ public class ShopManager : MonoBehaviour
     }
     private void Start()
     {
-        InitializeShopData();
-
         rerollButton.onClick.AddListener(RerollUnits);
         expButton.onClick.AddListener(LevelUpShop);
-
         UpdateShopUI();
-        GenerateUnitSlots();
     }
     /// <summary>
-    /// 최초 실행시 data와 config 연동
+    /// ShopManager 초기화
     /// </summary>
-    private void InitializeShopData()
+    /// <param name="shopInfo">GameConfig에서 받은 ShopInfo 데이터</param>
+    public void InitializeShop(ShopInfo shopInfo)
     {
-        shopData = shopConfig.ShopInfo;
+        shopData = shopInfo;
+        UpdateShopUI();
+        GenerateUnitSlots();
     }
     /// <summary>
     /// UI 업데이트
@@ -162,10 +158,6 @@ public class ShopManager : MonoBehaviour
             slot.GetComponent<UnitSlot>().Setup(unit, this);
         }
     }
-    /// <summary>
-    /// 해당 레벨에 맞는 유닛데이터를 랜덤으로 선출
-    /// </summary>
-    /// <returns>UnitData</returns>
     private UnitData GetRandomUnitByLevel()
     {
         var levelData = shopData.unitRatesByLevel.Find(r => r.shopLevel == shopData.shopLevel);
@@ -179,13 +171,22 @@ public class ShopManager : MonoBehaviour
             cumulativeProbability += rate.spawnRate;
             if (randomValue <= cumulativeProbability)
             {
-                var units = shopData.availableUnits.FindAll(u => u.costLevel == rate.costLevel);
-                return units[Random.Range(0, units.Count)];
+                // Filter available units based on active synergies
+                var units = shopData.availableUnits.FindAll(u =>
+                    u.costLevel == rate.costLevel &&
+                    u.synergyList.Exists(synergy => SynergieManager.Instance.synergies.Contains(synergy))
+                );
+
+                if (units.Count > 0)
+                {
+                    return units[Random.Range(0, units.Count)];
+                }
             }
         }
 
         return null;
     }
+
     /// <summary>
     /// 상점 리롤
     /// </summary>

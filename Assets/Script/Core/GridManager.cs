@@ -22,8 +22,9 @@ public class GridManager : MonoBehaviour
     private ShopManager shopManager;
     // 타일별 그리드 좌표
     public Dictionary<Vector2Int, GridTile> gridTiles = new Dictionary<Vector2Int, GridTile>();
-    
 
+    // 맵 위에 배치된 유닛 리스트
+    public List<Unit> placedUnits = new List<Unit>();
     private void Awake()
     {
         // 싱글톤 구현
@@ -40,7 +41,9 @@ public class GridManager : MonoBehaviour
         InitializeGrid();
         shopManager = ShopManager.Instance;
     }
-
+    /// <summary>
+    /// 그리드 초기화
+    /// </summary>
     private void InitializeGrid()
     {
         // GridTiles 부모 오브젝트에서 모든 자식 GridTile 찾기
@@ -76,6 +79,9 @@ public class GridManager : MonoBehaviour
             tile.UpdateMaterial(materialToApply);
         }
     }
+    /// <summary>
+    /// 타일 타입에 따른 메터리얼 가져오기
+    /// </summary>
     private Material GetMaterialForTile(GridTile.TileType tileType, bool isUnlocked)
     {
         if (!isUnlocked) return lockedMaterial;
@@ -102,4 +108,72 @@ public class GridManager : MonoBehaviour
         }
         return null;
     }
+    /// <summary>
+    /// 유닛 추가 (맵 위에 배치된 경우)
+    /// </summary>
+    public void AddUnit(Unit unit)
+    {
+        if (!placedUnits.Contains(unit))
+        {
+            placedUnits.Add(unit);
+        }
+    }
+    /// <summary>
+    /// 유닛 제거 (맵에서 제거된 경우)
+    /// </summary>
+    public void RemoveUnit(Unit unit)
+    {
+        if (placedUnits.Contains(unit))
+        {
+            placedUnits.Remove(unit);
+        }
+    }
+    /// <summary>
+    /// 특정 타입의 유닛 리스트 가져오기
+    /// </summary>
+    public List<Unit> GetUnitsByType(UnitType type)
+    {
+        return placedUnits.FindAll(unit => unit.unitType == type);
+    }
+    /// <summary>
+    /// 모든 배치된 유닛 리스트 반환
+    /// </summary>
+    public List<Unit> GetAllUnits()
+    {
+        return new List<Unit>(placedUnits); // 새로운 리스트로 반환
+    }
+    /// <summary>
+    /// 유닛을 타일로 이동
+    /// </summary>
+    public void MoveUnitToTile(Unit unit, GridTile targetTile)
+    {
+        if (unit == null || targetTile == null ||
+            !targetTile.PlaceUnit(unit, ShopManager.Instance.shopData.shopLevel)) return;
+
+        GridTile previousTile = GetTile(unit.currentGridTile);
+        if (previousTile != null) previousTile.RemoveUnit();
+
+        Vector3 targetPosition = targetTile.transform.position + new Vector3(0, unit.transform.localScale.y / 2, 0);
+        unit.MoveToTile(targetTile.gridCoordinates, targetPosition);
+    }
+
+    /// <summary>
+    /// 유닛과 유닛의 위치 교환
+    /// </summary>
+    public void SwapUnits(Unit unitA, Unit unitB)
+    {
+        if (unitA == null || unitB == null) return;
+
+        GridTile tileA = GetTile(unitA.currentGridTile);
+        GridTile tileB = GetTile(unitB.currentGridTile);
+
+        if (tileA == null || tileB == null) return;
+
+        tileA.RemoveUnit();
+        tileB.RemoveUnit();
+
+        MoveUnitToTile(unitA, tileB);
+        MoveUnitToTile(unitB, tileA);
+    }
+
 }
