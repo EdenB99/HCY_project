@@ -16,6 +16,7 @@ MonoBehaviour:
   costLevel: 1
   starLevel: 1
   image: {fileID: 21300000, guid: 6bab0de6f245c6d478c249b5516cc219, type: 3}
+  unitPrefab: {fileID: 5434685673209402010, guid: 018f72196e2948c4aa8eb5ec7e64213c, type: 3}
   synergyList:
   - {fileID: 11400000, guid: d668c7985f927c5468ef034581c93a02, type: 2}
   type: 0

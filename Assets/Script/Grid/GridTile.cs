@@ -23,7 +23,7 @@ public class GridTile : MonoBehaviour
     public TileType tileType = TileType.Default; // 타일의 타입
     public int unlockLevel;   // 타일이 공개되는 레벨
     public Vector2Int gridCoordinates; // 타일의 그리드 좌표
-    public GameObject occupant = null; // 타일 위의 유닛
+    public Unit occupant = null; // 타일 위의 유닛
 
     private Renderer tileRenderer;
 
@@ -58,7 +58,7 @@ public class GridTile : MonoBehaviour
     {
         if (occupant != null) // 유닛이 존재하면 유닛을 선택
         {
-            SelectionManager.Instance.SelectUnit(occupant.GetComponent<Unit>());
+            SelectionManager.Instance.SelectUnit(occupant);
         }
         else // 유닛이 없으면 타일을 선택
         {
@@ -66,13 +66,13 @@ public class GridTile : MonoBehaviour
         }
     }
     /// <summary>
-    /// 타일이 변경될 수 있는지 확인
+    /// 타일에 해당 유닛이 배치될 수 있는지 확인
     /// </summary>
     /// <param name="unit">배치될 유닛</param>
     /// <param name="currentLevel">현재 상점레벨</param>
     /// <returns></returns>
     
-    public bool PlaceUnit(Unit unit, int currentLevel)
+    public bool CanPlaceUnit(UnitData unitdata, int currentLevel)
     {
         // 배치 불가능한 타일이면
         if (tileType == TileType.WaveIn || tileType == TileType.WaveOut)
@@ -87,12 +87,14 @@ public class GridTile : MonoBehaviour
             return false;
         }
         // 타일 타입에 따라 유닛 배치 가능 여부 확인
-        if (tileType == TileType.Melee && unit.unitType != UnitType.Melee)
+        if (tileType == TileType.Melee && (unitdata.type != UnitType.Melee ||
+            unitdata.type != UnitType.Marshal))
         {
             Debug.LogWarning("근접 유닛만 이 타일에 배치 가능합니다.");
             return false;
         }
-        if (tileType == TileType.Range && unit.unitType != UnitType.Range)
+        if (tileType == TileType.Range && (unitdata.type != UnitType.Range ||
+            unitdata.type != UnitType.Marshal))
         {
             Debug.LogWarning("원거리 유닛만 이 타일에 배치 가능합니다.");
             return false;
@@ -104,8 +106,11 @@ public class GridTile : MonoBehaviour
             Debug.LogWarning("타일이 이미 점유되어 있습니다.");
             return false;
         }
-        occupant = unit.gameObject;
         return true;
+    }
+    public void PlaceUnit(Unit unit)
+    {
+        occupant = unit;
     }
     /// <summary>
     /// 유닛제거

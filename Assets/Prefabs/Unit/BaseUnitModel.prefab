@@ -9,12 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3639449902549621537}
-  - component: {fileID: 5745973974900477517}
   - component: {fileID: 4848731023026059703}
   - component: {fileID: 6852614228518959773}
   - component: {fileID: 1966348745071866588}
   m_Layer: 0
-  m_Name: TestUnit
+  m_Name: BaseUnitModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,14 +35,6 @@ Transform:
   - {fileID: 8778915136600946937}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5745973974900477517
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5434685673209402010}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &4848731023026059703
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -119,23 +110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6936128e50ba3bd448dbbad8d3bac842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  CostLevel: 0
-  StarLevel: 0
-  maxHP: 0
+  unitData: {fileID: 0}
+  unitType: 0
   currentHP: 0
-  maxSP: 0
   currentSP: 0
-  attackPower: 0
-  magicPower: 0
-  attackSpeed: 0
-  range: 0
-  critChance: 0
-  lifesteal: 0
-  durability: 0
   currentGridTile: {x: 0, y: 0}
-  skillName: 
-  synergies: []
+  isSelected: 0
 --- !u!1 &7099079907324890447
 GameObject:
   m_ObjectHideFlags: 0

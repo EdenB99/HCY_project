@@ -46,15 +46,13 @@ public class SynergieManager : MonoBehaviour
     /// </summary>
     public void AddUnit(Unit unit)
     {
-        foreach (var synergy in unit.unitData.synergyList) //유닛이 가진 시너지 리스트 순회
+        foreach (var synergy in unit.UnitData.synergyList) //유닛이 가진 시너지 리스트 순회
         {
             if (!synergyUnits.ContainsKey(synergy.synergyName)) continue;
 
             HashSet<Unit> units = synergyUnits[synergy.synergyName];
-            if (units.Add(unit)) // 유닛 추가 성공 시
-            {
-                UpdateSynergyLevel(synergy.synergyName);
-            }
+
+            if (units.Add(unit)) UpdateSynergyLevel(synergy.synergyName);
         }
     }
     /// <summary>
@@ -62,15 +60,13 @@ public class SynergieManager : MonoBehaviour
     /// </summary>
     public void RemoveUnit(Unit unit)
     {
-        foreach (var synergy in unit.unitData.synergyList) //유닛이 가진 시너지 리스트 순회
+        foreach (var synergy in unit.UnitData.synergyList) //유닛이 가진 시너지 리스트 순회
         {
             if (!synergyUnits.ContainsKey(synergy.synergyName)) continue;
 
             HashSet<Unit> units = synergyUnits[synergy.synergyName];
-            if (units.Remove(unit)) // 유닛 제거 성공 시
-            {
-                UpdateSynergyLevel(synergy.synergyName);
-            }
+
+            if (units.Remove(unit)) UpdateSynergyLevel(synergy.synergyName);
         }
     }
     /// <summary>

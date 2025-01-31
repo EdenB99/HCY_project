@@ -44,7 +44,7 @@ public class ShopManager : MonoBehaviour
     //현재 사용되는 데이터
     [Header("Shop Data")]
     public ShopInfo shopData;
-    [Header("Component")]
+    [Header("UI Component")]
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI expText;
@@ -59,6 +59,7 @@ public class ShopManager : MonoBehaviour
     public TextMeshProUGUI threeCostText;
     public TextMeshProUGUI fourCostText;
     public TextMeshProUGUI FiveCostText;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -158,6 +159,10 @@ public class ShopManager : MonoBehaviour
             slot.GetComponent<UnitSlot>().Setup(unit, this);
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     private UnitData GetRandomUnitByLevel()
     {
         var levelData = shopData.unitRatesByLevel.Find(r => r.shopLevel == shopData.shopLevel);
@@ -228,20 +233,27 @@ public class ShopManager : MonoBehaviour
     /// <summary>
     /// 유닛 구매
     /// </summary>
-    /// <param name="clickedSlot"></param>
+    /// <param name="clickedSlot">선택된 슬롯</param>
     public void PurchaseUnit(UnitSlot clickedSlot)
     {
-        UnitData unit = clickedSlot.unitData;
-        if (shopData.gold < unit.costLevel)
+        UnitData slotunit = clickedSlot.unitData;
+        if (shopData.gold < slotunit.costLevel)
         {
             Debug.LogWarning("골드가 부족합니다!");
             return;
         }
+        GridTile spawnTile = GridManager.Instance.GetAvailableTile(slotunit);
+        if (spawnTile == null)
+        {
+            Debug.LogWarning("배치 가능한 타일이 없습니다!");
+            return;
+        }
 
-        shopData.gold -= unit.costLevel;
-        Debug.Log($"유닛 {unit.name}을(를) 구매했습니다!");
+        shopData.gold -= slotunit.costLevel;
+        Debug.Log($"유닛 {slotunit.name}을(를) 구매했습니다!");
 
         clickedSlot.gameObject.SetActive(false);
+        GridManager.Instance.SpawnUnit(clickedSlot.unitData, spawnTile);
         UpdateShopUI();
     }
 }

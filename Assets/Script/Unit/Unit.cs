@@ -5,10 +5,17 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     [Header("Unit Data Reference")]
-    public UnitData unitData;
+    private UnitData unitdata;
+    public UnitData UnitData {
+        get => unitdata;
+        set
+        {
+            value = unitdata;
+            InitializeUnit();
+        }
+    }
 
     [Header("Runtime Data")]
-    public UnitType unitType;
     public int currentHP;              // 현재 체력
     public int currentSP;              // 현재 스킬 포인트
     public Vector2Int currentGridTile; // 현재 타일 그리드 좌표
@@ -26,22 +33,16 @@ public class Unit : MonoBehaviour
             Highlight(value);
         }
     }
-
-    private void Start()
-    {
-        InitializeUnit(); // 유닛 데이터 초기화
-    }
     private void InitializeUnit()
     {
-        if (unitData == null)
+        if (UnitData == null)
         {
             Debug.LogError("UnitData가 설정되지 않았습니다.");
             return;
         }
 
         // ScriptableObject 데이터를 기반으로 유닛 초기화
-        unitType = unitData.type;
-        currentHP = unitData.maxHP;
+        currentHP = UnitData.maxHP;
         currentSP = 0; // 시작 시 스킬 포인트는 0
     }
     private void OnMouseDown()

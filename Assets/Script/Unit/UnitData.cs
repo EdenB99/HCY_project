@@ -17,6 +17,9 @@ public class UnitData : ScriptableObject
     public int costLevel; // 유닛 가격
     public int starLevel; // 유닛 등급
     public Sprite image; // 유닛 이미지
+    public GameObject unitPrefab;
+
+    [Header("Synergies")]
     public List<SynergyDatabase> synergyList;
 
     [Header("Ingame Stats")]
