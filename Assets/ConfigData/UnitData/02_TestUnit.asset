@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: 02_TestUnit
   m_EditorClassIdentifier: 
   unitName: Test3
-  costLevel: 3
+  costLevel: 1
   starLevel: 1
   image: {fileID: 21300000, guid: 4aa4dc909b586c14198e6883472062be, type: 3}
-  unitPrefab: {fileID: 5434685673209402010, guid: 018f72196e2948c4aa8eb5ec7e64213c, type: 3}
+  unitPrefab: {fileID: 5434685673209402010, guid: 2b0435c5ece3dc84a9c822a57ae5342e, type: 3}
   synergyList:
   - {fileID: 11400000, guid: d668c7985f927c5468ef034581c93a02, type: 2}
-  type: 1
+  type: 2
   maxHP: 10
   currentHP: 10
   maxSP: 10

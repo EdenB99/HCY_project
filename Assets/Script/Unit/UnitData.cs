@@ -8,6 +8,13 @@ public enum UnitType
     Range,
     Marshal
 }
+public enum DamageType
+{
+    Physical,    
+    Magical,     
+    True,        
+    StatusEffect 
+}
 
 [CreateAssetMenu(fileName = "UnitData", menuName = "Unit/Create New Unit")]
 public class UnitData : ScriptableObject

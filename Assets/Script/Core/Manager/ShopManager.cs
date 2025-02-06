@@ -253,7 +253,7 @@ public class ShopManager : MonoBehaviour
         Debug.Log($"유닛 {slotunit.name}을(를) 구매했습니다!");
 
         clickedSlot.gameObject.SetActive(false);
-        GridManager.Instance.SpawnUnit(clickedSlot.unitData, spawnTile);
+        GridManager.Instance.SpawnUnit(slotunit, spawnTile);
         UpdateShopUI();
     }
 }

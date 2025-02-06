@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    [Header("Unit Data Reference")]
+    [SerializeField]
     private UnitData unitdata;
     public UnitData UnitData {
         get => unitdata;
         set
         {
-            value = unitdata;
+            unitdata = value;
             InitializeUnit();
         }
     }
@@ -19,7 +19,16 @@ public class Unit : MonoBehaviour
     public int currentHP;              // 현재 체력
     public int currentSP;              // 현재 스킬 포인트
     public Vector2Int currentGridTile; // 현재 타일 그리드 좌표
-
+    private int starLevel;
+    public int StarLevel
+    {
+        get => starLevel;
+        set
+        {
+            starLevel = value;
+            ApplyStarLevelScaling();
+        }
+    }
 
     // 유닛의 위치 및 좌표 데이터
     [SerializeField]
@@ -48,6 +57,7 @@ public class Unit : MonoBehaviour
     private void OnMouseDown()
     {
          SelectionManager.Instance.SelectUnit(this);
+         Debug.Log($"{unitdata.unitName}/{unitdata.starLevel}");
     }
     /// <summary>
     /// 유닛 강조 표시
@@ -68,34 +78,29 @@ public class Unit : MonoBehaviour
         currentGridTile = TileGridPos;
         transform.position = TileWorldPos;
     }
-    /* // 공격 처리
-     public void Attack(Unit target)
-     {
-         int damage = attackPower; // 기본 물리 피해량
-         if (Random.value <= critChance / 100f)
-         {
-             damage = Mathf.RoundToInt(damage * 1.5f); // 치명타
-             Debug.Log("치명타 발생!");
-         }
+    /// <summary>
+    /// StarLevel이 변경될 때 크기 조정
+    /// </summary>
+    private void ApplyStarLevelScaling()
+    {
+        float scaleMultiplier = 1.0f + ((starLevel - UnitData.starLevel) * 0.2f);
+        transform.localScale = Vector3.one * scaleMultiplier;
+    }
 
-         target.TakeDamage(damage);
-     }
+    /// <summary>
+    /// 일반공격
+    /// </summary>
+    /// <param name="target"></param>
+    public void nomalAttack(Enemy target)
+    {
+        if (target == null) return;
 
-     // 피해 처리
-     public void TakeDamage(int damage)
-     {
-         int finalDamage = Mathf.Max(0, damage - durability); // 내구력 적용
-         currentHP -= finalDamage;
+        int baseDamage = UnitData.attackPower; // 기본 물리 피해량
+        target.TakeDamage(baseDamage, DamageType.Physical);
+    }
 
-         if (currentHP <= 0)
-         {
-             Die();
-         }
-         else
-         {
-             Debug.Log($"{name} 유닛이 {finalDamage}의 피해를 입음. 남은 HP: {currentHP}/{maxHP}");
-         }
-     }*/
+
+   
 
     // 유닛 사망 처리
     private void Die()

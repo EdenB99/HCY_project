@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class GridManager : MonoBehaviour
 {
@@ -73,14 +74,15 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public void MoveUnitToTile(Unit unit, GridTile targetTile)
     {
-        if (unit == null || targetTile == null ||
-            !targetTile.CanPlaceUnit(unit.UnitData, ShopManager.Instance.shopData.shopLevel)) return;
+        if (unit == null || targetTile == null || !targetTile.CanPlaceUnit
+            (unit.UnitData, ShopManager.Instance.shopData.shopLevel)) return;
 
         GridTile previousTile = GetTile(unit.currentGridTile);
         if (previousTile != null) previousTile.RemoveUnit();
 
         Vector3 targetPosition = targetTile.transform.position + new Vector3(0, unit.transform.localScale.y / 2, 0);
         unit.MoveToTile(targetTile.gridCoordinates, targetPosition);
+        targetTile.PlaceUnit(unit);
     }
 
     /// <summary>
@@ -102,7 +104,7 @@ public class GridManager : MonoBehaviour
         MoveUnitToTile(unitB, tileA);
     }
     /// <summary>
-    /// 유닛을 생성해서 배치까지 완료
+    /// 유닛을 생성
     /// </summary>
     /// <param name="unitData">생성할 유닛데이터</param>
     /// <param name="spawnTile">배치할 타일</param>
@@ -113,27 +115,49 @@ public class GridManager : MonoBehaviour
             Debug.LogError("배치할 타일이 없습니다.");
             return;
         }
-
-        // UnitBaseModel 생성
-        GameObject unitBase = new GameObject($"Unit_{unitData.unitName}");
-        Unit unitComponent = unitBase.GetComponent<Unit>();
-        unitComponent.UnitData = unitData;
-
-        // UnitData의 프리팹을 불러와서 자식으로 추가
-        if (unitData.unitPrefab != null)
+        if (unitData.unitPrefab == null)
         {
-            GameObject model = Instantiate(unitData.unitPrefab, unitBase.transform);
+            Debug.LogError("지정된 모델이 없습니다.");
+            return;
+        }
+        GameObject unitObject = Instantiate(unitData.unitPrefab);
+
+        Unit unitComponent = unitObject.GetComponent<Unit>();
+        if (unitComponent == null)
+        {
+            Debug.LogError("Unit.cs가 존재하지 않음");
+            unitObject.IsDestroyed();
+            return;
         }
 
-        // 유닛을 해당 타일에 배치
-        unitComponent.MoveToTile(spawnTile.gridCoordinates, spawnTile.transform.position);
-        spawnTile.PlaceUnit(unitComponent);
+        unitComponent.UnitData = unitData;
 
-        // 유닛을 관리 리스트에 추가
-        placedUnits.Add(unitComponent);
-        // 유닛을 시너지리스트에 추가
+        MoveUnitToTile(unitComponent, spawnTile);
+        placedUnits.Add(unitComponent); 
         SynergieManager.Instance.AddUnit(unitComponent);
+        CheckAndMergeUnits(unitComponent);
     }
+    /// <summary>
+    /// 유닛이 3개 이상 존재하면 합성
+    /// </summary>
+    private void CheckAndMergeUnits(Unit newUnit)
+    {
+        List<Unit> sameUnits = placedUnits.FindAll(unit => unit.UnitData ==
+        newUnit.UnitData && unit.UnitData.starLevel == newUnit.UnitData.starLevel);
+
+        if (sameUnits.Count >= 3)
+        {
+            Debug.Log($"유닛 {newUnit.UnitData.unitName} 3개 감지, 합성 진행!");
+
+            // 가장 앞의 유닛을 강화
+            Unit mergeTarget = sameUnits[0];
+            mergeTarget.UnitData.starLevel++;
+
+            // 나머지 2개 제거
+            for (int i = 1; i < 3; i++) RemoveUnit(sameUnits[i]);
+        }
+    }
+
     //유닛리스트 기능
 
     /// <summary>
@@ -141,7 +165,12 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public void RemoveUnit(Unit unit)
     {
-        if (placedUnits.Contains(unit)) placedUnits.Remove(unit);
+        placedUnits.Remove(unit);
+        GridTile previousTile = GetTile(unit.currentGridTile);
+        if (previousTile != null) previousTile.RemoveUnit();
+
+        SynergieManager.Instance.RemoveUnit(unit);
+        Destroy(unit.gameObject);
     }
 
 

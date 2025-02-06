@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 4848731023026059703}
   - component: {fileID: 6852614228518959773}
   - component: {fileID: 1966348745071866588}
+  - component: {fileID: 1776108299907389521}
   m_Layer: 0
-  m_Name: BaseUnitModel
+  m_Name: 02_TestUnit2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,10 +111,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6936128e50ba3bd448dbbad8d3bac842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitdata: {fileID: 0}
   currentHP: 0
   currentSP: 0
   currentGridTile: {x: 1, y: 1}
   isSelected: 0
+--- !u!33 &1776108299907389521
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5434685673209402010}
+  m_Mesh: {fileID: -1816864256551976230, guid: a9129ae83f8faf646961b70c4b103833, type: 3}
 --- !u!1 &7099079907324890447
 GameObject:
   m_ObjectHideFlags: 0
