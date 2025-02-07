@@ -18,19 +18,12 @@ public class Enemy : MonoBehaviour
     private int currentPathIndex = 0;
     private float moveSpeed;
 
-
-    private void Start()
+    public void InitializeEnemy(EnemyData data, List<Vector2Int> path)
     {
-        InitializeEnemy();
-        StartCoroutine(MoveAlongPath());
-        if (movementPath != null && movementPath.Count > 0) // 이동 경로가 있을 경우에만 실행
-        {
-            StartCoroutine(MoveAlongPath());
-        }
-    }
+        enemyData = data;
+        movementPath = path;
+        currentPathIndex = 0;
 
-    private void InitializeEnemy()
-    {
         if (enemyData == null)
         {
             Debug.LogError("EnemyData가 설정되지 않았습니다.");
@@ -40,6 +33,11 @@ public class Enemy : MonoBehaviour
         currentHP = enemyData.maxHP;
         currentSP = 0;
         moveSpeed = enemyData.moveSpeed;
+
+        if (movementPath != null && movementPath.Count > 0)
+        {
+            StartCoroutine(MoveAlongPath());
+        }
     }
 
     /// <summary>
@@ -47,36 +45,43 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private IEnumerator MoveAlongPath()
     {
+        if (movementPath == null || movementPath.Count == 0)
+        {
+            Debug.LogError($"{enemyData.enemyName}의 이동 경로가 설정되지 않았습니다.");
+            yield break;
+        }
         while (!isStunned && currentPathIndex < movementPath.Count)
         {
+            // 2. 현재 인덱스가 유효한지 확인
+            if (currentPathIndex >= movementPath.Count) yield break;
             Vector2Int gridPosition = movementPath[currentPathIndex];
-            Vector3 worldPosition = GridManager.Instance.GetTile(gridPosition).transform.position;
+            GridTile targetTile = GridManager.Instance.GetTile(gridPosition);
+            // 3. 해당 타일이 존재하지 않으면 오류 출력 후 종료
+            if (targetTile == null) yield break;
 
+            Vector3 worldPosition = targetTile.transform.position +
+                new Vector3(0, this.transform.localScale.y / 2, 0);
             while (Vector3.Distance(transform.position, worldPosition) > 0.1f)
             {
-                transform.position = Vector3.MoveTowards(transform.position, worldPosition, moveSpeed * Time.deltaTime);
+                transform.position =Vector3.MoveTowards
+                    (transform.position, worldPosition, moveSpeed * Time.deltaTime);
                 yield return null;
             }
-
             currentPathIndex++;
             yield return new WaitForSeconds(0.2f); // 이동 간 딜레이
         }
-
         if (currentPathIndex >= movementPath.Count)
         {
             ReachEndOfPath(); // 목표 지점 도달 시 호출
         }
     }
-
     /// <summary>
     /// 적 유닛이 목표 지점에 도달했을 때 실행
     /// </summary>
     private void ReachEndOfPath()
     {
-        Debug.Log($"{enemyData.enemyName}이(가) 목표 지점에 도착!");
-        EnemyWaveManager.Instance.ReturnEnemyToPool(this);
+        EnemySpawner.Instance.ReturnEnemyToPool(this);
     }
-
 
     /// <summary>
     /// 적 유닛이 피해를 받을 때 호출
@@ -84,16 +89,9 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage, DamageType damageType)
     {
         if (isStunned) return; // 기절 상태에서는 피해를 받지 않음
-
         int finalDamage = CalculateDamage(damage, damageType);
         currentHP -= finalDamage;
-
-        Debug.Log($"{enemyData.enemyName}이(가) {finalDamage} 피해를 받음. 남은 HP: {currentHP}/{enemyData.maxHP}");
-
-        if (currentHP <= 0)
-        {
-            StunUnit(); // 기절 처리
-        }
+        if (currentHP <= 0) StunUnit(); // 기절 처리
     }
     /// <summary>
     /// 피해 타입에 따라 실제 적용되는 피해량 계산
@@ -104,13 +102,10 @@ public class Enemy : MonoBehaviour
         {
             case DamageType.Physical:
                 return Mathf.Max(0, baseDamage - enemyData.defense); // 방어력 적용
-
             case DamageType.Magical:
                 return Mathf.Max(0, baseDamage - enemyData.resistance); // 내성치 적용
-
             case DamageType.True:
                 return baseDamage; // 고정 피해는 그대로 적용
-
             case DamageType.StatusEffect:
                 return Mathf.Max(0, baseDamage - enemyData.resistance/2); // 방어력과 내성치의 평균 적용
             default:
@@ -124,7 +119,7 @@ public class Enemy : MonoBehaviour
     {
         isStunned = true;
         Debug.Log($"{enemyData.enemyName}이(가) 기절함!");
-        EnemyWaveManager.Instance.ReturnEnemyToPool(this);
+        EnemySpawner.Instance.ReturnEnemyToPool(this);
     }
 
     /// <summary>
