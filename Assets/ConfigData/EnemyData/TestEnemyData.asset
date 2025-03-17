@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c73c655606bc046ae21471d88ccad2, type: 3}
   m_Name: TestEnemyData
   m_EditorClassIdentifier: 
-  enemyName: Teste
+  enemyName: TestMob
   maxHP: 10
-  maxSP: 10
+  maxSP: 100
   attackPower: 1
   focusPower: 1
   defense: 1
@@ -25,4 +25,4 @@ MonoBehaviour:
   critChance: 2
   lifesteal: 2
   skillName: asdasd
-  enemyPrefab: {fileID: 7948290530536820504, guid: 2f9bc9b4b4cdae143ac685901dae3883, type: 3}
+  enemyPrefab: {fileID: 7292498583778804622, guid: 97fb36ba92a357840a4cea83779a97c4, type: 3}

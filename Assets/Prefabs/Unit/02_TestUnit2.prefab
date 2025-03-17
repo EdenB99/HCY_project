@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6936128e50ba3bd448dbbad8d3bac842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitdata: {fileID: 0}
+  unitdata: {fileID: 11400000, guid: a0fd42ebc38f51149bca98e49b977f6f, type: 2}
   currentHP: 0
   currentSP: 0
   currentGridTile: {x: 1, y: 1}

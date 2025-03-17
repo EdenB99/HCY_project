@@ -2,21 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance { get; private set; }
+    public string xmlFilePath = "Assets/Data/WaveConfig.xml"; // XML 파일 경로
 
-    [Header("Wave Configuration")]
-    public WaveConfig waveConfigs; // 여러 개의 웨이브 설정을 저장
-    private int currentWaveIndex = 0;
-    private bool isWaveActive = false;
-
-    public List<GridTile> spawnTiles;  
-    public List<Vector2Int> movementPath;
-    [Header("Wave Settings")]
-    public float spawnInterval = 2f; // 적 생성 간격
-    public int currentWave = 0;
+    private Dictionary<string, Dictionary<EnemyData, int>> waves = new Dictionary<string, Dictionary<EnemyData, int>>();
 
     private void Awake()
     {
@@ -26,5 +17,61 @@ public class WaveManager : MonoBehaviour
 
     private void Start()
     {
+        LoadWaveDataFromXML();
+    }
+
+    private void LoadWaveDataFromXML()
+    {
+        WaveConfigXML waveConfig = WaveConfigXML.LoadFromFile(xmlFilePath);
+        if (waveConfig == null) return;
+
+        foreach (var wave in waveConfig.waves)
+        {
+            Dictionary<EnemyData, int> enemyGroup = new Dictionary<EnemyData, int>();
+
+            foreach (var enemy in wave.enemyGroups)
+            {
+                EnemyData enemyData = Resources.Load<EnemyData>($"EnemyData/{enemy.enemyName}");
+                if (enemyData != null)
+                {
+                    enemyGroup[enemyData] = enemy.count;
+                }
+                else
+                {
+                    Debug.LogError($"EnemyData {enemy.enemyName}을 찾을 수 없습니다.");
+                }
+            }
+
+            waves[wave.waveName] = enemyGroup;
+        }
+    }
+
+    /// <summary>
+    /// 인스펙터에서 실행 가능 (ContextMenu)
+    /// </summary>
+    [ContextMenu("Start Wave")]
+    public void StartWave(string waveName)
+    {
+        if (!waves.ContainsKey(waveName))
+        {
+            Debug.LogError($"웨이브 {waveName}을 찾을 수 없습니다.");
+            return;
+        }
+
+        StartCoroutine(SpawnWaveEnemies(waveName));
+    }
+
+    private IEnumerator SpawnWaveEnemies(string waveName)
+    {
+        Dictionary<EnemyData, int> enemyGroups = waves[waveName];
+
+        foreach (var group in enemyGroups)
+        {
+            for (int i = 0; i < group.Value; i++)
+            {
+                EnemySpawner.Instance.SpawnEnemy(group.Key, new List<Vector2Int>());
+                yield return new WaitForSeconds(1f);
+            }
+        }
     }
 }

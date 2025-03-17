@@ -78,32 +78,27 @@ public class GridTile : MonoBehaviour
         if (tileType == TileType.WaveIn || tileType == TileType.WaveOut
             || tileType == TileType.Lock)
         {
-            Debug.LogWarning($"타일타입 {tileType}은 배치할 수 없습니다.");
-            return false;
+           return false;
         }
 
         // 레벨이 타일레벨보다 부족하면
         if (currentLevel < unlockLevel)
         {
-            Debug.LogWarning($"타일 {gridCoordinates}은 현재 레벨 {currentLevel}에서 잠겨 있습니다.");
-            return false;
+           return false;
         }
         // 타일이 비어 있는지 확인
         if (occupant != null)
         {
-            Debug.LogWarning("타일이 이미 점유되어 있습니다.");
             return false;
         }
         // 타일 타입에 따라 유닛 배치 가능 여부 확인
         if (tileType == TileType.Melee && unitdata.type == UnitType.Range)
         {
-            Debug.LogWarning("근접 유닛만 이 타일에 배치 가능합니다.");
             return false;
         }
         if (tileType == TileType.Range && unitdata.type == UnitType.Melee)
         {
-            Debug.LogWarning("원거리 유닛만 이 타일에 배치 가능합니다.");
-            return false;
+             return false;
         }
         return true;
     }

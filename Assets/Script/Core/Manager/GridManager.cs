@@ -123,12 +123,6 @@ public class GridManager : MonoBehaviour
         GameObject unitObject = Instantiate(unitData.unitPrefab);
 
         Unit unitComponent = unitObject.GetComponent<Unit>();
-        if (unitComponent == null)
-        {
-            Debug.LogError("Unit.cs가 존재하지 않음");
-            unitObject.IsDestroyed();
-            return;
-        }
 
         unitComponent.UnitData = unitData;
 

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 [CreateAssetMenu(fileName = "EnemyData", menuName = "Enemy/Create New Enemy")]
 public class EnemyData : ScriptableObject
@@ -24,4 +26,54 @@ public class EnemyData : ScriptableObject
     [Header("Skill Settings")]
     public string skillName;         // 적의 기술 이름
     public GameObject enemyPrefab;   // 해당 적 유닛의 프리팹
+}
+public struct EnemyStats
+{
+    public int maxHP;
+    public int currentHP;
+    public int maxSP;
+    public int currentSP;
+    public int attackPower;
+    public int focusPower;
+    public int defense;
+    public int resistance;
+    public float attackSpeed;       
+    public int range;              
+    public float moveSpeed;         
+    public float critChance;       
+    public float lifesteal;
+
+    private float spRegenRate;  
+    private float spRegenBuffer;
+
+    public EnemyStats(EnemyData data)
+    {
+        maxHP = data.maxHP;
+        currentHP = data.maxHP;
+        maxSP = data.maxSP;
+        currentSP = 0;
+        attackPower = data.attackPower;
+        focusPower = data.focusPower;
+        defense = data.defense;
+        resistance = data.resistance;
+        attackSpeed = data.attackSpeed;
+        range = data.range;
+        moveSpeed = data.moveSpeed;
+        critChance = data.critChance;
+        lifesteal = data.lifesteal;
+
+        spRegenRate = Mathf.Round((focusPower / 100f) * 100f) / 100f;
+        spRegenBuffer = 0;
+    }
+
+    public void RecoverSP(float deltaTime)
+    {
+        spRegenBuffer += spRegenRate * deltaTime;
+        int spGain = Mathf.FloorToInt(spRegenBuffer);
+        if (spGain > 0)
+        {
+            currentSP += spGain;
+            spRegenBuffer -= spGain;
+        }
+    }
 }

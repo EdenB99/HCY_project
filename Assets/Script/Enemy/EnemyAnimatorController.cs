@@ -1,0 +1,53 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnemyAnimatorController : MonoBehaviour
+{
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
+    /// <summary>
+    /// 이동 애니메이션 실행
+    /// </summary>
+    public void PlayMoveAnimation(bool isMoving)
+    {
+        animator.SetBool("Move", isMoving);
+    }
+
+    /// <summary>
+    /// 공격 애니메이션 실행
+    /// </summary>
+    public void PlayAttackAnimation()
+    {
+        animator.SetTrigger("Attack");
+    }
+
+    /// <summary>
+    /// 스킬 애니메이션 실행
+    /// </summary>
+    public void PlaySkillAnimation()
+    {
+        animator.SetTrigger("Skill");
+    }
+
+    /// <summary>
+    /// 혼란 상태 애니메이션 실행
+    /// </summary>
+    public void PlayMazeAnimation()
+    {
+        animator.SetTrigger("Maze");
+    }
+
+    /// <summary>
+    /// 사망 애니메이션 실행
+    /// </summary>
+    public void PlayDeathAnimation()
+    {
+        animator.SetTrigger("Dead");
+    }
+}

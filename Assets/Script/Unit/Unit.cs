@@ -29,6 +29,11 @@ public class Unit : MonoBehaviour
             ApplyStarLevelScaling();
         }
     }
+    [Header("Components")]
+    private UnitAnimatorController unitAnimatorController;
+    private Renderer unitRenderer;
+    public Material transparencyMaterial; // 투명 머티리얼
+    private Material originalMaterial; // 원래 머티리얼 저장
 
     // 유닛의 위치 및 좌표 데이터
     [SerializeField]
@@ -42,6 +47,14 @@ public class Unit : MonoBehaviour
             Highlight(value);
         }
     }
+    private void Awake()
+    {
+        unitAnimatorController = GetComponentInChildren<UnitAnimatorController>();
+        unitRenderer = GetComponent<Renderer>();
+        if (unitRenderer != null)
+            originalMaterial = unitRenderer.material; // 초기 머티리얼 저장
+    }
+
     private void InitializeUnit()
     {
         if (UnitData == null)
@@ -65,7 +78,8 @@ public class Unit : MonoBehaviour
     /// <param name="highlight">선택 여부</param>
     public void Highlight(bool highlight)
     {
-        GetComponent<Renderer>().material.color = highlight ? Color.yellow : Color.white;
+        if (unitRenderer != null)
+            unitRenderer.material = highlight ? transparencyMaterial : originalMaterial;
     }
 
     /// <summary>
@@ -85,27 +99,5 @@ public class Unit : MonoBehaviour
     {
         float scaleMultiplier = 1.0f + ((starLevel - UnitData.starLevel) * 0.2f);
         transform.localScale = Vector3.one * scaleMultiplier;
-    }
-
-    /// <summary>
-    /// 일반공격
-    /// </summary>
-    /// <param name="target"></param>
-    public void nomalAttack(Enemy target)
-    {
-        if (target == null) return;
-
-        int baseDamage = UnitData.attackPower; // 기본 물리 피해량
-        target.TakeDamage(baseDamage, DamageType.Physical);
-    }
-
-
-   
-
-    // 유닛 사망 처리
-    private void Die()
-    {
-        Debug.Log($"{name} 유닛이 사망.");
-        gameObject.SetActive(false); // 임시로 유닛 비활성화
     }
 }

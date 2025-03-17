@@ -1,0 +1,9 @@
+<WaveConfig>
+	<Wave name="Wave1" type="Normal">
+		<Enemy name="" count="5"/>
+		<Enemy name="" count="2"/>
+	</Wave>
+	<Wave name="Wave2" type="Normal">
+		<Enemy name="" count="1"/>
+	</Wave>
+</WaveConfig>
