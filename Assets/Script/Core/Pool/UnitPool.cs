@@ -41,7 +41,7 @@ public class UnitPool : MonoBehaviour
             }
         }
 
-        unit.UnitData = unitData;
+        unit.unitData = unitData;
         return unit;
     }
 

@@ -11,19 +11,13 @@ public class EnemyAnimatorController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    /// <summary>
-    /// 이동 애니메이션 실행
-    /// </summary>
-    public void PlayMoveAnimation(bool isMoving)
-    {
-        animator.SetBool("Move", isMoving);
-    }
 
     /// <summary>
     /// 공격 애니메이션 실행
     /// </summary>
     public void PlayAttackAnimation()
     {
+        Debug.Log("is attack");
         animator.SetTrigger("Attack");
     }
 

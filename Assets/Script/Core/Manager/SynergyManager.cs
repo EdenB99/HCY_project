@@ -46,7 +46,7 @@ public class SynergieManager : MonoBehaviour
     /// </summary>
     public void AddUnit(Unit unit)
     {
-        foreach (var synergy in unit.UnitData.synergyList) //유닛이 가진 시너지 리스트 순회
+        foreach (var synergy in unit.unitData.synergyList) //유닛이 가진 시너지 리스트 순회
         {
             if (!synergyUnits.ContainsKey(synergy.synergyName)) continue;
 
@@ -60,7 +60,7 @@ public class SynergieManager : MonoBehaviour
     /// </summary>
     public void RemoveUnit(Unit unit)
     {
-        foreach (var synergy in unit.UnitData.synergyList) //유닛이 가진 시너지 리스트 순회
+        foreach (var synergy in unit.unitData.synergyList) //유닛이 가진 시너지 리스트 순회
         {
             if (!synergyUnits.ContainsKey(synergy.synergyName)) continue;
 

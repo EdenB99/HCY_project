@@ -75,7 +75,7 @@ public class GridManager : MonoBehaviour
     public void MoveUnitToTile(Unit unit, GridTile targetTile)
     {
         if (unit == null || targetTile == null || !targetTile.CanPlaceUnit
-            (unit.UnitData, ShopManager.Instance.shopData.shopLevel)) return;
+            (unit.unitData, ShopManager.Instance.shopData.shopLevel)) return;
 
         GridTile previousTile = GetTile(unit.currentGridTile);
         if (previousTile != null) previousTile.RemoveUnit();
@@ -124,7 +124,7 @@ public class GridManager : MonoBehaviour
 
         Unit unitComponent = unitObject.GetComponent<Unit>();
 
-        unitComponent.UnitData = unitData;
+        unitComponent.unitData = unitData;
 
         MoveUnitToTile(unitComponent, spawnTile);
         placedUnits.Add(unitComponent); 
@@ -136,16 +136,16 @@ public class GridManager : MonoBehaviour
     /// </summary>
     private void CheckAndMergeUnits(Unit newUnit)
     {
-        List<Unit> sameUnits = placedUnits.FindAll(unit => unit.UnitData ==
-        newUnit.UnitData && unit.UnitData.starLevel == newUnit.UnitData.starLevel);
+        List<Unit> sameUnits = placedUnits.FindAll(unit => unit.unitData ==
+        newUnit.unitData && unit.unitData.starLevel == newUnit.unitData.starLevel);
 
         if (sameUnits.Count >= 3)
         {
-            Debug.Log($"유닛 {newUnit.UnitData.unitName} 3개 감지, 합성 진행!");
+            Debug.Log($"유닛 {newUnit.unitData.unitName} 3개 감지, 합성 진행!");
 
             // 가장 앞의 유닛을 강화
             Unit mergeTarget = sameUnits[0];
-            mergeTarget.UnitData.starLevel++;
+            mergeTarget.unitData.starLevel++;
 
             // 나머지 2개 제거
             for (int i = 1; i < 3; i++) RemoveUnit(sameUnits[i]);
@@ -190,7 +190,7 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public List<Unit> GetUnitsByType(UnitType type)
     {
-        return placedUnits.FindAll(unit => unit.UnitData.type == type);
+        return placedUnits.FindAll(unit => unit.unitData.type == type);
     }
 
     /// <summary>

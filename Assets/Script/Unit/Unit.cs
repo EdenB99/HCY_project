@@ -1,40 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
     [SerializeField]
-    private UnitData unitdata;
-    public UnitData UnitData {
-        get => unitdata;
-        set
-        {
-            unitdata = value;
-            InitializeUnit();
-        }
-    }
+    public UnitData unitData;
+    private UnitStats stats;
 
     [Header("Runtime Data")]
-    public int currentHP;              // 현재 체력
-    public int currentSP;              // 현재 스킬 포인트
+    private bool isDead = false;
     public Vector2Int currentGridTile; // 현재 타일 그리드 좌표
-    private int starLevel;
-    public int StarLevel
-    {
-        get => starLevel;
-        set
-        {
-            starLevel = value;
-            ApplyStarLevelScaling();
-        }
-    }
-    [Header("Components")]
-    private UnitAnimatorController unitAnimatorController;
-    private Renderer unitRenderer;
-    public Material transparencyMaterial; // 투명 머티리얼
-    private Material originalMaterial; // 원래 머티리얼 저장
-
     // 유닛의 위치 및 좌표 데이터
     [SerializeField]
     private bool isSelected;
@@ -43,10 +20,18 @@ public class Unit : MonoBehaviour
         get => isSelected;
         set
         {
-            isSelected = value; 
+            isSelected = value;
             Highlight(value);
         }
     }
+
+    [Header("Components")]
+    private UnitAnimatorController unitAnimatorController;
+    private Renderer unitRenderer;
+    public Material transparencyMaterial; // 투명 머티리얼
+    private Material originalMaterial; // 원래 머티리얼 저장
+
+    
     private void Awake()
     {
         unitAnimatorController = GetComponentInChildren<UnitAnimatorController>();
@@ -54,32 +39,21 @@ public class Unit : MonoBehaviour
         if (unitRenderer != null)
             originalMaterial = unitRenderer.material; // 초기 머티리얼 저장
     }
-
-    private void InitializeUnit()
+    private void OnEnable()
     {
-        if (UnitData == null)
-        {
-            Debug.LogError("UnitData가 설정되지 않았습니다.");
-            return;
-        }
-
-        // ScriptableObject 데이터를 기반으로 유닛 초기화
-        currentHP = UnitData.maxHP;
-        currentSP = 0; // 시작 시 스킬 포인트는 0
+        if (unitData != null)
+            InitializeUnit(unitData);
     }
-    private void OnMouseDown()
+
+
+
+    public void InitializeUnit(UnitData data)
     {
-         SelectionManager.Instance.SelectUnit(this);
-         Debug.Log($"{unitdata.unitName}/{unitdata.starLevel}");
-    }
-    /// <summary>
-    /// 유닛 강조 표시
-    /// </summary>
-    /// <param name="highlight">선택 여부</param>
-    public void Highlight(bool highlight)
-    {
-        if (unitRenderer != null)
-            unitRenderer.material = highlight ? transparencyMaterial : originalMaterial;
+        unitData = data;
+        stats = new UnitStats(unitData);
+        if (stats.onStarChanged == null)
+            stats.onStarChanged += ApplyStarLevelScaling;
+        ApplyStarLevelScaling();
     }
 
     /// <summary>
@@ -92,12 +66,51 @@ public class Unit : MonoBehaviour
         currentGridTile = TileGridPos;
         transform.position = TileWorldPos;
     }
+
+    private void OnMouseDown()
+    {
+         SelectionManager.Instance.SelectUnit(this);
+         Debug.Log($"{unitData.unitName}/{unitData.starLevel}");
+    }
+    /// <summary>
+    /// 유닛 강조 표시
+    /// </summary>
+    /// <param name="highlight">선택 여부</param>
+    public void Highlight(bool highlight)
+    {
+        if (unitRenderer != null)
+            unitRenderer.material = highlight ? transparencyMaterial : originalMaterial;
+    }
+
+
     /// <summary>
     /// StarLevel이 변경될 때 크기 조정
     /// </summary>
     private void ApplyStarLevelScaling()
     {
-        float scaleMultiplier = 1.0f + ((starLevel - UnitData.starLevel) * 0.2f);
-        transform.localScale = Vector3.one * scaleMultiplier;
+        
+        float scaleMultiplier = 1.0f + ((stats.starLevel - unitData.starLevel) * 0.2f);
+        Transform modelTransform = transform.GetChild(0).transform;
+        modelTransform.localScale = Vector3.one * scaleMultiplier;
     }
+    
+    /// <summary>
+    /// 적 유닛이 피해를 받을 때 호출
+    /// </summary>
+    public void TakeDamage(int damage, DamageType damageType)
+    {
+        if (isDead) return;
+        stats.TakeDamage(damage, damageType);
+        if (stats.currentHP <= 0)
+            Die();
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        Debug.Log($"{unitData.unitName}이(가) 사망!");
+        gameObject.SetActive(false);
+    }
+
+   
 }

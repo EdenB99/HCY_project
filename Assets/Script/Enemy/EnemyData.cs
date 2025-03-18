@@ -62,7 +62,7 @@ public struct EnemyStats
         critChance = data.critChance;
         lifesteal = data.lifesteal;
 
-        spRegenRate = Mathf.Round((focusPower / 100f) * 100f) / 100f;
+        spRegenRate = Mathf.RoundToInt(focusPower / 100f);
         spRegenBuffer = 0;
     }
 
@@ -74,6 +74,7 @@ public struct EnemyStats
         {
             currentSP += spGain;
             spRegenBuffer -= spGain;
+            currentSP = Mathf.Min(currentSP, maxSP);
         }
     }
 }

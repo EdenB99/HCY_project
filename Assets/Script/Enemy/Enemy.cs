@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,28 +8,33 @@ public class Enemy : MonoBehaviour
     [Header("Enemy Data Reference")]
     public EnemyData enemyData;
     private EnemyStats stats;
-    public EnemyStats Stats
-    {
-        get => stats;
-        set
-        {
-            stats = value;
-            UpdateStats();
-        }
-    }
 
-    private bool isDead = false;
+    [Header("Components")]
+    private BoxCollider attackRangeCollider;
+    private EnemyAnimatorController enemyAC;
+    private List<Unit> unitsInRange = new List<Unit>();
+    private Unit targetUnit = null;
 
     [Header("Movement")]
     public List<Vector2Int> movementPath; // 이동 경로 (그리드 좌표)
     private int currentPathIndex = 0;
     
     [Header("Status Effects")]
+    private bool isDead = false;
+    private bool isAttacking = false;
     private bool isStunned = false; // 기절 여부
     private bool isRooted = false;  // 속박 여부
     private float slowMultiplier = 1.0f;
+    private Coroutine attackCoroutine;
+    private Unit currentTarget;
+    
 
 
+    private void Awake()
+    {
+        attackRangeCollider = GetComponent<BoxCollider>();
+        enemyAC = GetComponentInChildren<EnemyAnimatorController>();
+    }
     /// <summary>
     /// SP를 초당 회복 (기술 사용 가능할 경우)
     /// </summary>
@@ -42,6 +48,10 @@ public class Enemy : MonoBehaviour
             UseSkill();
             stats.currentSP = 0;
         }
+        FindNearestUnit();
+
+        if (targetUnit != null && !isAttacking)
+            StartCoroutine(AttackUnit(targetUnit));
     }
 
     private void OnEnable()
@@ -61,24 +71,28 @@ public class Enemy : MonoBehaviour
         movementPath = path;
         currentPathIndex = 0;
         isDead = false;
+        isAttacking = false;
         isStunned = false;
         isRooted = false;
         slowMultiplier = 1.0f;
 
         stats = new EnemyStats(enemyData); // 구조체로 데이터 초기화
-
+        AdjustAttackRangeCollider(); // 콜라이더 크기 조정
         if (movementPath != null && movementPath.Count > 0)
             StartCoroutine(MoveAlongPath());
     }
-    /// <summary>
-    /// EnemyStats가 변경될 때 자동으로 호출
-    /// </summary>
-    private void UpdateStats()
-    {
-        if (isDead) return;
-        Debug.Log($"{enemyData.enemyName}의 스탯이 업데이트됨!");
-    }
 
+    /// <summary>
+    /// BoxCollider의 크기를 stats.Range에 맞게 조정
+    /// </summary>
+    private void AdjustAttackRangeCollider()
+    {
+        if (attackRangeCollider != null)
+        {
+            attackRangeCollider.size = new Vector3(stats.range * 2, 2, stats.range * 2);
+            attackRangeCollider.isTrigger = true;
+        }
+    }
 
 
 
@@ -99,26 +113,22 @@ public class Enemy : MonoBehaviour
         while (!isDead && !isStunned && !isRooted && currentPathIndex < movementPath.Count)
         {
             if (currentPathIndex >= movementPath.Count) yield break;
+            if (isAttacking) yield return null; // 공격 중이면 이동 정지
+
             Vector2Int gridPosition = movementPath[currentPathIndex];
             GridTile targetTile = GridManager.Instance.GetTile(gridPosition);
             if (targetTile == null) yield break;
 
             Vector3 worldPosition = targetTile.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            RotateTowardsTarget(worldPosition);
 
-           
-            Vector3 direction = (worldPosition - transform.position).normalized;
-            if (direction != Vector3.zero)
+            while (Vector3.Distance(transform.position, worldPosition) > 0.1f)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-                while (Vector3.Distance(transform.position, worldPosition) > 0.1f)
-                {
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
-                    transform.position = Vector3.MoveTowards(transform.position, worldPosition, (stats.moveSpeed * slowMultiplier) * Time.deltaTime);
-                    yield return null;
-                }
+                transform.position = Vector3.MoveTowards
+                    (transform.position, worldPosition, (stats.moveSpeed * slowMultiplier) * Time.deltaTime);
+                yield return null;
             }
-        
+
             currentPathIndex++;
             yield return new WaitForSeconds(0.2f);
         }
@@ -134,15 +144,102 @@ public class Enemy : MonoBehaviour
     private void ReachEndOfPath()
     {
         EnemySpawner.Instance.ReturnEnemyToPool(this);
+        Debug.Log("유닛통과");
     }
 
+    private void RotateTowardsTarget(Vector3 targetPosition)
+    {
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        if (direction != Vector3.zero)
+        {
+            direction.y = 0; // Y축 회전 방지
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
+        }
+    }
+    /// <summary>
+    /// 이동을 멈춰야 하는 조건
+    /// </summary>
+    private bool ShouldStopMoving()
+    {
+        return isAttacking || isStunned || isRooted;
+    }
 
-
+    /// <summary>
+    /// 이동을 멈추는 메소드
+    /// </summary>
+    private void StopMovement()
+    {
+        StopCoroutine(MoveAlongPath());
+    }
 
 
 
     //---------------------------------------------------------------------------
     //피해 관련 메소드
+
+    /// <summary>
+    /// 감지된 유닛을 리스트에 추가
+    /// </summary>
+    private void OnTriggerEnter(Collider other)
+    {
+        Unit unit = other.GetComponent<Unit>();
+        if (unit != null && !unitsInRange.Contains(unit))
+        {
+            unitsInRange.Add(unit);
+        }
+    }
+    /// <summary>
+    /// 범위에서 벗어난 유닛을 리스트에서 제거
+    /// </summary>
+    private void OnTriggerExit(Collider other)
+    {
+        Unit unit = other.GetComponent<Unit>();
+        if (unit != null && unitsInRange.Contains(unit))
+        {
+            unitsInRange.Remove(unit);
+        }
+    }
+
+    /// <summary>
+    /// 범위 내 유닛 중 가장 가까운 유닛 찾기
+    /// </summary>
+    private void FindNearestUnit()
+    {
+        float closestDistance = float.MaxValue;
+        Unit closestUnit = null;
+
+        foreach (Unit unit in unitsInRange)
+        {
+            float distance = Vector3.Distance(transform.position, unit.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestUnit = unit;
+            }
+        }
+
+        targetUnit = closestUnit;
+    }
+    /// <summary>
+    /// 유닛 공격 루틴
+    /// </summary>
+    private IEnumerator AttackUnit(Unit unit)
+    {
+        if (unit == null) yield break;
+
+        isAttacking = true;
+        RotateTowardsTarget(unit.transform.position);
+        enemyAC.PlayAttackAnimation();
+
+        yield return new WaitForSeconds(1.0f / stats.attackSpeed); // 공격 속도에 따라 딜레이
+
+        if (unit != null)
+            unit.TakeDamage(stats.attackPower, DamageType.Physical);
+
+        isAttacking = false;
+    }
+
 
     /// <summary>
     /// 적 유닛이 피해를 받을 때 호출
@@ -178,7 +275,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
+    
 
     //---------------------------------------------------------------------------
     //상태 관련 메소드
