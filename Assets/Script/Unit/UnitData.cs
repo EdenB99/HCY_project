@@ -48,6 +48,7 @@ public class UnitData : ScriptableObject
 
 public struct UnitStats
 {
+    public UnitType type;
     private int StarLevel;
     public int starLevel
     {
@@ -78,6 +79,7 @@ public struct UnitStats
 
     public UnitStats(UnitData data)
     {
+        type = data.type;
         StarLevel = data.starLevel;
         maxHP = data.maxHP;
         currentHP = data.maxHP;

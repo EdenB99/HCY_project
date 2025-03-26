@@ -111,11 +111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6936128e50ba3bd448dbbad8d3bac842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitdata: {fileID: 11400000, guid: a0fd42ebc38f51149bca98e49b977f6f, type: 2}
-  currentHP: 0
-  currentSP: 0
+  unitData: {fileID: 11400000, guid: a0fd42ebc38f51149bca98e49b977f6f, type: 2}
+  transparencyMaterial: {fileID: 0}
   currentGridTile: {x: 1, y: 1}
-  isSelected: 0
 --- !u!33 &1776108299907389521
 MeshFilter:
   m_ObjectHideFlags: 0

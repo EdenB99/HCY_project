@@ -160,7 +160,7 @@ public class ShopManager : MonoBehaviour
         }
     }
     /// <summary>
-    /// 
+    /// 레벨에 따른 랜덤 유닛 생성
     /// </summary>
     /// <returns></returns>
     private UnitData GetRandomUnitByLevel()

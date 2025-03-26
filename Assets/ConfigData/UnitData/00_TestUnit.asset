@@ -14,20 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Remordix
   costLevel: 1
-  starLevel: 1
+  starLevel: 2
   image: {fileID: 21300000, guid: 6bab0de6f245c6d478c249b5516cc219, type: 3}
   unitPrefab: {fileID: 5434685673209402010, guid: 5dfe6e0a75dd8234ba8eadd95505ff2f, type: 3}
   synergyList:
   - {fileID: 11400000, guid: d668c7985f927c5468ef034581c93a02, type: 2}
   type: 0
   maxHP: 10
-  currentHP: 10
   maxSP: 10
-  currentSP: 10
   attackPower: 10
-  magicPower: 10
-  attackSpeed: 10
-  range: 10
+  focusPower: 0
+  attackSpeed: 0.5
+  range: 2
   critChance: 10
   lifesteal: 10
   durability: 10
+  stoppingPower: 1

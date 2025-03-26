@@ -32,7 +32,6 @@ public class GridManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else
         {
-            Debug.LogError("ShopManager가 두 개 이상 존재합니다.");
             Destroy(gameObject);
             return;
         }
@@ -121,11 +120,7 @@ public class GridManager : MonoBehaviour
             return;
         }
         GameObject unitObject = Instantiate(unitData.unitPrefab);
-
         Unit unitComponent = unitObject.GetComponent<Unit>();
-
-        unitComponent.unitData = unitData;
-
         MoveUnitToTile(unitComponent, spawnTile);
         placedUnits.Add(unitComponent); 
         SynergieManager.Instance.AddUnit(unitComponent);

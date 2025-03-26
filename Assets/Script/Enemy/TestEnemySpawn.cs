@@ -15,8 +15,15 @@ public class TestEnemySpawn : MonoBehaviour
             Debug.LogError("EnemyData 또는 이동 경로가 설정되지 않았습니다.");
             return;
         }
-
-        // EnemySpawner를 통해 Enemy 생성
+        StartCoroutine(StartSpawn());
+    }
+    private  IEnumerator StartSpawn()
+    {
         EnemySpawner.Instance.SpawnEnemy(enemyData, movementPath);
+        yield return new WaitForSeconds(3f);
+         EnemySpawner.Instance.SpawnEnemy(enemyData, movementPath);
+        yield return new WaitForSeconds(3f);
+         EnemySpawner.Instance.SpawnEnemy(enemyData, movementPath);
+
     }
 }

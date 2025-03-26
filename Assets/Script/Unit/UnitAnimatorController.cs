@@ -1,15 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitAnimatorController : MonoBehaviour
 {
+    public Transform ACtransfrom;
+    private Unit unit;
     private Animator animator;
     private Renderer modelRenderer;
     private void Awake()
     {
+        ACtransfrom = GetComponent<Transform>();
         animator = GetComponent<Animator>();
         modelRenderer = GetComponent<Renderer>();
+        unit = GetComponentInParent<Unit>();
     }
     /// <summary>
     /// 애니메이션 트리거 실행
@@ -42,6 +47,13 @@ public class UnitAnimatorController : MonoBehaviour
             animator.SetTrigger("Die");
         }
     }
-
-    
+    public void onAnimationEnd(String animationName) 
+    {
+        unit.OnAnimationComplete(animationName);
+    }
+    private void OnMouseDown()
+    {
+        SelectionManager.Instance.SelectUnit(unit);
+        Debug.Log($"{unit.unitData.unitName}/{unit.unitData.starLevel}");
+    }
 }

@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class EnemyAnimatorController : MonoBehaviour
 {
+    public Transform ACtransfrom;
     private Animator animator;
 
     private void Awake()
     {
+        ACtransfrom = GetComponent<Transform>();
         animator = GetComponent<Animator>();
     }
 

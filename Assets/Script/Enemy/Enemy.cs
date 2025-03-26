@@ -12,22 +12,24 @@ public class Enemy : MonoBehaviour
     [Header("Components")]
     private BoxCollider attackRangeCollider;
     private EnemyAnimatorController enemyAC;
-    private List<Unit> unitsInRange = new List<Unit>();
-    private Unit targetUnit = null;
+
 
     [Header("Movement")]
     public List<Vector2Int> movementPath; // 이동 경로 (그리드 좌표)
     private int currentPathIndex = 0;
-    
-    [Header("Status Effects")]
-    private bool isDead = false;
+
+    [Header("Runtime Data")]
+    private float attackCooldown = 0f;
+    private List<Unit> unitsInRange = new List<Unit>();
+    private Unit targetUnit = null;
     private bool isAttacking = false;
-    private bool isStunned = false; // 기절 여부
-    private bool isRooted = false;  // 속박 여부
+    private bool isStopped = false;
+    public bool IsStopped => isStopped;
+    private bool isDead = false;
+    private bool isStunned = false;
+    private bool isRooted = false;
     private float slowMultiplier = 1.0f;
-    private Coroutine attackCoroutine;
-    private Unit currentTarget;
-    
+
 
 
     private void Awake()
@@ -35,9 +37,7 @@ public class Enemy : MonoBehaviour
         attackRangeCollider = GetComponent<BoxCollider>();
         enemyAC = GetComponentInChildren<EnemyAnimatorController>();
     }
-    /// <summary>
-    /// SP를 초당 회복 (기술 사용 가능할 경우)
-    /// </summary>
+
     private void Update()
     {
         if (isDead || stats.maxSP == 0) return;
@@ -48,12 +48,16 @@ public class Enemy : MonoBehaviour
             UseSkill();
             stats.currentSP = 0;
         }
-        FindNearestUnit();
-
-        if (targetUnit != null && !isAttacking)
-            StartCoroutine(AttackUnit(targetUnit));
+        // 공격 대기 시간 감소
+        attackCooldown -= Time.deltaTime;
+        attackCooldown = Mathf.Max(0f, attackCooldown);
+        if (attackCooldown <= 0f && CanAttack())
+        {
+            float attackInterval = Mathf.Max(1.0f / 3.0f, 1.0f / Mathf.Round(stats.attackSpeed * 100) / 100); // 최소 공격 텀: 1초당 3번
+            StartCoroutine(Attack());
+            attackCooldown = attackInterval; // 공격 대기 시간 초기화
+        }
     }
-
     private void OnEnable()
     {
         if (enemyData != null)
@@ -109,23 +113,23 @@ public class Enemy : MonoBehaviour
             Debug.LogError($"{enemyData.enemyName}의 이동 경로가 설정되지 않았습니다.");
             yield break;
         }
-
-        while (!isDead && !isStunned && !isRooted && currentPathIndex < movementPath.Count)
+        while (!isDead && currentPathIndex < movementPath.Count)
         {
             if (currentPathIndex >= movementPath.Count) yield break;
-            if (isAttacking) yield return null; // 공격 중이면 이동 정지
 
             Vector2Int gridPosition = movementPath[currentPathIndex];
             GridTile targetTile = GridManager.Instance.GetTile(gridPosition);
             if (targetTile == null) yield break;
 
             Vector3 worldPosition = targetTile.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
-            RotateTowardsTarget(worldPosition);
 
             while (Vector3.Distance(transform.position, worldPosition) > 0.1f)
             {
-                transform.position = Vector3.MoveTowards
-                    (transform.position, worldPosition, (stats.moveSpeed * slowMultiplier) * Time.deltaTime);
+                while (!CanMove())
+                    yield return null; // CanMove가 true가 될 때까지 대기
+                RotateTowardsTarget(worldPosition);
+                transform.position = Vector3.MoveTowards(transform.position, worldPosition,
+                (stats.moveSpeed * slowMultiplier) * Time.deltaTime);
                 yield return null;
             }
 
@@ -149,30 +153,34 @@ public class Enemy : MonoBehaviour
 
     private void RotateTowardsTarget(Vector3 targetPosition)
     {
-        Vector3 direction = (targetPosition - transform.position).normalized;
+        if (enemyAC == null || enemyAC.ACtransfrom == null)
+        {
+            Debug.LogWarning("EnemyAnimatorController 또는 ACtransfrom이 초기화되지 않았습니다.");
+            return;
+        }
+        Vector3 direction = (targetPosition - enemyAC.ACtransfrom.position).normalized;
         if (direction != Vector3.zero)
         {
             direction.y = 0; // Y축 회전 방지
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
+            enemyAC.ACtransfrom.rotation = Quaternion.Slerp(enemyAC.ACtransfrom.rotation, targetRotation, 10f * Time.deltaTime);
         }
     }
-    /// <summary>
-    /// 이동을 멈춰야 하는 조건
-    /// </summary>
-    private bool ShouldStopMoving()
-    {
-        return isAttacking || isStunned || isRooted;
-    }
 
     /// <summary>
-    /// 이동을 멈추는 메소드
+    /// 이동이 가능한지 확인
     /// </summary>
-    private void StopMovement()
+    private bool CanMove()
     {
-        StopCoroutine(MoveAlongPath());
+        if (isDead || isAttacking || isStopped || isStunned || isRooted)
+            return false;
+        return true;
     }
 
+    public void StopState(bool isStop)
+    {
+        isStopped = isStop;
+    }
 
 
     //---------------------------------------------------------------------------
@@ -183,6 +191,7 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void OnTriggerEnter(Collider other)
     {
+        if (other is BoxCollider) return;
         Unit unit = other.GetComponent<Unit>();
         if (unit != null && !unitsInRange.Contains(unit))
         {
@@ -194,6 +203,7 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void OnTriggerExit(Collider other)
     {
+        if (other is BoxCollider) return;
         Unit unit = other.GetComponent<Unit>();
         if (unit != null && unitsInRange.Contains(unit))
         {
@@ -224,20 +234,15 @@ public class Enemy : MonoBehaviour
     /// <summary>
     /// 유닛 공격 루틴
     /// </summary>
-    private IEnumerator AttackUnit(Unit unit)
+    private IEnumerator Attack()
     {
-        if (unit == null) yield break;
-
         isAttacking = true;
-        RotateTowardsTarget(unit.transform.position);
+        // 대상 방향으로 회전
+        RotateTowardsTarget(targetUnit.transform.position);
+        // 공격 애니메이션 실행
         enemyAC.PlayAttackAnimation();
-
-        yield return new WaitForSeconds(1.0f / stats.attackSpeed); // 공격 속도에 따라 딜레이
-
-        if (unit != null)
-            unit.TakeDamage(stats.attackPower, DamageType.Physical);
-
-        isAttacking = false;
+        isAttacking = false; // 공격 완료
+        yield return null;
     }
 
 
@@ -275,7 +280,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    
+
+
+    /// <summary>
+    /// 공격이 가능한지 확인
+    /// </summary>
+    private bool CanAttack()
+    {
+        // 공격 불가능한 조건
+        if (isDead || isStunned || isAttacking || targetUnit == null)
+            return false;
+
+        return true; // 위 조건에 해당하지 않으면 공격 가능
+    }
 
     //---------------------------------------------------------------------------
     //상태 관련 메소드
@@ -286,7 +303,6 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         isDead = true;
-        Debug.Log($"{enemyData.enemyName}이(가) 사망함!");
         EnemySpawner.Instance.ReturnEnemyToPool(this);
     }
 
@@ -298,19 +314,21 @@ public class Enemy : MonoBehaviour
         if (isStunned) return;
 
         isStunned = true;
+
+        // 공격 중단
         StartCoroutine(RemoveStun(duration));
     }
 
     private IEnumerator RemoveStun(float duration)
     {
         yield return new WaitForSeconds(duration);
-        isStunned = false;
+        isStunned = false; // Stun 상태 해제
     }
 
     /// <summary>
     /// 속박 상태 적용 (이동 불가, 공격 가능)
     /// </summary>
-    public void ApplyRoot(float duration)
+    public void Root(float duration)
     {
         if (isRooted) return;
 
@@ -338,7 +356,7 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(duration);
         slowMultiplier = 1.0f; // 원래 속도로 복구
     }
-    
+
     /// <summary>
     /// 적이 보유한 기술 사용
     /// </summary>
