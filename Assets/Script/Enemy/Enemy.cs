@@ -30,6 +30,7 @@ public class Enemy : MonoBehaviour
     private bool isRooted = false;
     private float slowMultiplier = 1.0f;
 
+    public static event Action<Enemy> OnEnemyDied;
 
 
     private void Awake()
@@ -53,9 +54,8 @@ public class Enemy : MonoBehaviour
         attackCooldown = Mathf.Max(0f, attackCooldown);
         if (attackCooldown <= 0f && CanAttack())
         {
-            float attackInterval = Mathf.Max(1.0f / 3.0f, 1.0f / Mathf.Round(stats.attackSpeed * 100) / 100); // 최소 공격 텀: 1초당 3번
             StartCoroutine(Attack());
-            attackCooldown = attackInterval; // 공격 대기 시간 초기화
+            attackCooldown = Mathf.Max(1.0f / 3.0f, 1.0f / stats.attackSpeed);
         }
     }
     private void OnEnable()
@@ -304,6 +304,7 @@ public class Enemy : MonoBehaviour
     {
         isDead = true;
         EnemySpawner.Instance.ReturnEnemyToPool(this);
+        OnEnemyDied?.Invoke(this);
     }
 
     /// <summary>

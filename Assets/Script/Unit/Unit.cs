@@ -9,6 +9,7 @@ public class Unit : MonoBehaviour
     [Header("Unit Data Reference")]
     public UnitData unitData;
     private UnitStats stats;
+    private IAttackStrategy attackStrategy;
 
     [Header("Components")]
     private BoxCollider attackRangeCollider;
@@ -22,9 +23,8 @@ public class Unit : MonoBehaviour
     private HashSet<Enemy> enemiesInRange = new HashSet<Enemy>();
     private HashSet<Enemy> StoppingEnemies = new HashSet<Enemy>();
     private Enemy targetEnemy;
-    private bool isRooted = false;
     private float slowMultiplier = 1.0f;
-
+    private bool isRooted = false;
     private bool isAttacking = false;
     private bool isSkill = false;
     private bool isDead = false;
@@ -51,12 +51,19 @@ public class Unit : MonoBehaviour
             originalMaterial = unitRenderer.material; // 초기 머티리얼 저장
 
         stats = new UnitStats(unitData);
+
+        InitializeAttackStrategy();
     }
 
     private void OnEnable()
     {
         if (unitData != null)
             InitializeUnit();
+        Enemy.OnEnemyDied += HandleEnemyDeath;
+    }
+    void OnDisable()
+    {
+        Enemy.OnEnemyDied -= HandleEnemyDeath;
     }
 
     public void InitializeUnit()
@@ -65,6 +72,50 @@ public class Unit : MonoBehaviour
         UpdateEnemiesInRange();
         FindNearestTarget();
         CanStopState();
+    }
+
+    private void InitializeAttackStrategy()
+    {
+        // 유닛 타입에 따라 공격 방식을 설정
+        switch (unitData.type)
+        {
+            case UnitType.Melee:
+                attackStrategy = new MeleeAttackStrategy();
+                break;
+            case UnitType.Range:
+                attackStrategy = new RangeAttackStrategy();
+                break;
+            default:
+                attackStrategy = new RangeAttackStrategy();
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 적이 죽었을 때 호출되는 함수
+    /// </summary>
+    private void HandleEnemyDeath(Enemy deadEnemy)
+    {
+        // enemiesInRange에서 제거
+        if (enemiesInRange.Contains(deadEnemy))
+        {
+            enemiesInRange.Remove(deadEnemy);
+            Debug.Log($"{deadEnemy.enemyData.enemyName}이(가) 제거되었습니다. enemiesInRange 업데이트.");
+
+            // StoppingEnemies에서 제거
+            if (StoppingEnemies.Contains(deadEnemy))
+            {
+                deadEnemy.StopState(false);
+                StoppingEnemies.Remove(deadEnemy);
+                Debug.Log($"{deadEnemy.enemyData.enemyName}이(가) StoppingEnemies에서 제거되었습니다.");
+            }
+
+            // 가장 가까운 적 다시 찾기
+            FindNearestTarget();
+
+            // CanStopState 업데이트
+            CanStopState();
+        }
     }
 
     private void Update()
@@ -89,7 +140,8 @@ public class Unit : MonoBehaviour
         }
 
         // 시선 처리
-        RotateTowardsTarget(targetEnemy.gameObject);
+        if (targetEnemy != null) // targetEnemy가 null인지 확인
+            RotateTowardsTarget(targetEnemy.gameObject);
     }
 
 
@@ -117,6 +169,7 @@ public class Unit : MonoBehaviour
         currentGridTile = TileGridPos;
         transform.position = TileWorldPos;
         UpdateEnemiesInRange();
+        CanStopState();
     }
 
 
@@ -159,6 +212,7 @@ public class Unit : MonoBehaviour
         {
             case "Attack":
                 isAttacking = false;
+                attackStrategy.ExecuteAttack(this, targetEnemy);
                 break;
 
             case "Skill":
@@ -273,12 +327,27 @@ public class Unit : MonoBehaviour
     public void TakeDamage(int damage, DamageType damageType)
     {
         if (isDead) return;
-        stats.TakeDamage(damage, damageType);
+
+        int finalDamage = CalculateDamage(damage, damageType);
+        stats.currentHP -= finalDamage;
+
         if (stats.currentHP <= 0)
             Die();
     }
 
 
+    private int CalculateDamage(int baseDamage, DamageType damageType)
+    {
+        switch (damageType)
+        {
+            case DamageType.True:
+                return baseDamage;
+            case DamageType.StatusEffect:
+                return baseDamage;
+            default:
+                return Mathf.Max(0, baseDamage - stats.durability);
+        }
+    }
 
 
 

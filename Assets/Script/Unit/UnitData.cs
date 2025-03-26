@@ -111,25 +111,5 @@ public struct UnitStats
             currentSP = Mathf.Min(currentSP, maxSP);
         }
     }
-
-    public void TakeDamage(int damage, DamageType damageType)
-    {
-        int finalDamage = CalculateDamage(damage, damageType);
-        currentHP -= finalDamage;
-        currentHP = Mathf.Max(0, currentHP);
-    }
-
-    private int CalculateDamage(int baseDamage, DamageType damageType)
-    {
-        switch (damageType)
-        {
-            case DamageType.True:
-                return baseDamage;
-            case DamageType.StatusEffect:
-                return baseDamage;
-            default:
-                return Mathf.Max(0, baseDamage - durability);
-        }
-    }
 }
 

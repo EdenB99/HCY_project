@@ -22,7 +22,7 @@ MonoBehaviour:
   type: 0
   maxHP: 10
   maxSP: 10
-  attackPower: 10
+  attackPower: 5
   focusPower: 0
   attackSpeed: 0.5
   range: 2
