@@ -7,13 +7,25 @@ public class EnemyAnimatorController : MonoBehaviour
     public Transform ACtransfrom;
     private Animator animator;
 
+    private Enemy enemy;
+
     private void Awake()
     {
         ACtransfrom = GetComponent<Transform>();
         animator = GetComponent<Animator>();
+        enemy = GetComponentInParent<Enemy>();
     }
 
-
+    /// <summary>
+    /// 애니메이션 트리거 실행
+    /// </summary>
+    public void PlayAnimation(string triggerName)
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger(triggerName);
+        }
+    }
     /// <summary>
     /// 공격 애니메이션 실행
     /// </summary>

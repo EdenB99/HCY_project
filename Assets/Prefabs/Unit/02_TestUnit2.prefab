@@ -112,7 +112,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitData: {fileID: 11400000, guid: a0fd42ebc38f51149bca98e49b977f6f, type: 2}
-  transparencyMaterial: {fileID: 0}
+  transparencyMaterial: {fileID: 2100000, guid: ad0c439e26fd0d440816d5aac65c67a3, type: 2}
+  killCount: 0
   currentGridTile: {x: 1, y: 1}
 --- !u!33 &1776108299907389521
 MeshFilter:

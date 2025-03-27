@@ -19,6 +19,7 @@ public class Unit : MonoBehaviour
     private Material originalMaterial; // 원래 머티리얼 저장
 
     [Header("Runtime Data")]
+    public int killCount;
     private float attackCooldown = 0f;
     private HashSet<Enemy> enemiesInRange = new HashSet<Enemy>();
     private HashSet<Enemy> StoppingEnemies = new HashSet<Enemy>();
@@ -40,6 +41,10 @@ public class Unit : MonoBehaviour
             Highlight(value);
         }
     }
+    public Action<Unit> OnUnitDied; // 유닛 사망 시 호출
+    public Action<Unit, Enemy> OnAttacked; // 공격 시 호출
+    public Action<Unit> OnSkillUsed; // 스킬 사용 시 호출
+    public Action<Unit, int, DamageType> OnTakeDamaged; // 피해를 받을 때 호출
 
 
     private void Awake()
@@ -59,11 +64,11 @@ public class Unit : MonoBehaviour
     {
         if (unitData != null)
             InitializeUnit();
-        Enemy.OnEnemyDied += HandleEnemyDeath;
     }
     void OnDisable()
     {
-        Enemy.OnEnemyDied -= HandleEnemyDeath;
+        foreach (var enemy in enemiesInRange)
+            enemy.OnEnemyDied -= HandleEnemyDeath;
     }
 
     public void InitializeUnit()
@@ -100,21 +105,19 @@ public class Unit : MonoBehaviour
         if (enemiesInRange.Contains(deadEnemy))
         {
             enemiesInRange.Remove(deadEnemy);
-            Debug.Log($"{deadEnemy.enemyData.enemyName}이(가) 제거되었습니다. enemiesInRange 업데이트.");
 
             // StoppingEnemies에서 제거
             if (StoppingEnemies.Contains(deadEnemy))
             {
                 deadEnemy.StopState(false);
                 StoppingEnemies.Remove(deadEnemy);
-                Debug.Log($"{deadEnemy.enemyData.enemyName}이(가) StoppingEnemies에서 제거되었습니다.");
             }
 
             // 가장 가까운 적 다시 찾기
             FindNearestTarget();
-
             // CanStopState 업데이트
             CanStopState();
+            killCount++;
         }
     }
 
@@ -237,6 +240,7 @@ public class Unit : MonoBehaviour
         if (enemy != null)
         {
             enemiesInRange.Add(enemy); // 중복되지 않도록 추가
+            enemy.OnEnemyDied += HandleEnemyDeath;
             FindNearestTarget();
             CanStopState();
         }
@@ -252,6 +256,7 @@ public class Unit : MonoBehaviour
         if (enemy != null && enemiesInRange.Contains(enemy))
         {
             enemy.StopState(false);
+            enemy.OnEnemyDied -= HandleEnemyDeath;
             enemiesInRange.Remove(enemy);
             FindNearestTarget();
             CanStopState();
@@ -285,6 +290,16 @@ public class Unit : MonoBehaviour
     /// </summary>
     private void FindNearestTarget()
     {
+        if (StoppingEnemies.Count > 0)
+        {
+            targetEnemy = null; // 초기화
+            foreach (Enemy enemy in StoppingEnemies)
+            {
+                targetEnemy = enemy; // 첫 번째 적을 타겟으로 지정
+                break;
+            }
+            return; // StoppingEnemies에 적이 있으면 여기서 종료
+        }
         float closestDistance = float.MaxValue;
         Enemy closestEnemy = null;
 
@@ -306,6 +321,7 @@ public class Unit : MonoBehaviour
         Debug.Log(targetEnemy.name);
         // 공격 애니메이션 실행
         unitAC.PlayAttackAnimation(UnityEngine.Random.Range(0, 1));
+        OnAttacked?.Invoke(this, targetEnemy); // OnAttacked 호출
         yield return null;
     }
 
@@ -330,6 +346,8 @@ public class Unit : MonoBehaviour
 
         int finalDamage = CalculateDamage(damage, damageType);
         stats.currentHP -= finalDamage;
+
+        OnTakeDamaged?.Invoke(this, finalDamage, damageType); // OnTakeDamaged 호출
 
         if (stats.currentHP <= 0)
             Die();
@@ -406,6 +424,7 @@ public class Unit : MonoBehaviour
     {
         isDead = true;
         Debug.Log($"{unitData.unitName}이(가) 사망!");
+        OnUnitDied?.Invoke(this); // OnUnitDied 호출
         gameObject.SetActive(false);
     }
     /// <summary>
@@ -462,7 +481,8 @@ public class Unit : MonoBehaviour
     private void UseSkill()
     {
         Debug.Log($"{unitData.unitName} 스킬 사용!");
-        //실제 스킬 코드 필요
+        OnSkillUsed?.Invoke(this); // OnSkillUsed 호출
+        // 실제 스킬 코드 필요
     }
     private bool CanSkill()
     {

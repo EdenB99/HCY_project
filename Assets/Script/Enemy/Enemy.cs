@@ -30,8 +30,10 @@ public class Enemy : MonoBehaviour
     private bool isRooted = false;
     private float slowMultiplier = 1.0f;
 
-    public static event Action<Enemy> OnEnemyDied;
-
+    public event Action<Enemy> OnEnemyDied;
+    public Action<Enemy, Unit> OnAttacked; // 공격 시 호출
+    public Action<Enemy> OnSkillUsed; // 스킬 사용 시 호출
+    public Action<Enemy, int, DamageType> OnTakeDamaged; // 피해를 받을 때 호출
 
     private void Awake()
     {
@@ -154,10 +156,7 @@ public class Enemy : MonoBehaviour
     private void RotateTowardsTarget(Vector3 targetPosition)
     {
         if (enemyAC == null || enemyAC.ACtransfrom == null)
-        {
-            Debug.LogWarning("EnemyAnimatorController 또는 ACtransfrom이 초기화되지 않았습니다.");
             return;
-        }
         Vector3 direction = (targetPosition - enemyAC.ACtransfrom.position).normalized;
         if (direction != Vector3.zero)
         {
@@ -241,7 +240,8 @@ public class Enemy : MonoBehaviour
         RotateTowardsTarget(targetUnit.transform.position);
         // 공격 애니메이션 실행
         enemyAC.PlayAttackAnimation();
-        isAttacking = false; // 공격 완료
+        OnAttacked?.Invoke(this, targetUnit); // OnAttacked 호출
+        isAttacking = false; // enemyAC에서 공격 애니메이션 종료 시 isAttacking을 false로 변경필요
         yield return null;
     }
 
@@ -255,7 +255,7 @@ public class Enemy : MonoBehaviour
 
         int finalDamage = CalculateDamage(damage, damageType);
         stats.currentHP -= finalDamage;
-
+        OnTakeDamaged?.Invoke(this, finalDamage, damageType); // OnTakeDamaged 호출
         if (stats.currentHP <= 0)
             Die();
     }
@@ -364,6 +364,7 @@ public class Enemy : MonoBehaviour
     private void UseSkill()
     {
         Debug.Log($"{enemyData.enemyName}이(가) {enemyData.skillName}을 사용!");
+        OnSkillUsed?.Invoke(this); // OnSkillUsed 호출
         // 실제 스킬 실행 코드 필요
     }
 }

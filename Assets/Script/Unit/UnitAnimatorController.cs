@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UnitAnimatorController : MonoBehaviour
 {
@@ -47,12 +48,14 @@ public class UnitAnimatorController : MonoBehaviour
             animator.SetTrigger("Die");
         }
     }
-    public void onAnimationEnd(String animationName) 
+    public void onAnimationEnd(String animationName)
     {
         unit.OnAnimationComplete(animationName);
     }
     private void OnMouseDown()
     {
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            return;
         SelectionManager.Instance.SelectUnit(unit);
         Debug.Log($"{unit.unitData.unitName}/{unit.unitData.starLevel}");
     }

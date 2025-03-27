@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GridTile : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class GridTile : MonoBehaviour
         Special,
     }
 
-    
+
     [Header("TileData")]
     public TileType tileType = TileType.Default; // 타일의 타입
     public int unlockLevel;   // 타일이 공개되는 레벨
@@ -56,6 +57,8 @@ public class GridTile : MonoBehaviour
     /// </summary>
     private void OnMouseDown()
     {
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            return;
         if (occupant != null) // 유닛이 존재하면 유닛을 선택
         {
             SelectionManager.Instance.SelectUnit(occupant);
@@ -71,20 +74,20 @@ public class GridTile : MonoBehaviour
     /// <param name="unit">배치될 유닛</param>
     /// <param name="currentLevel">현재 상점레벨</param>
     /// <returns></returns>
-    
+
     public bool CanPlaceUnit(UnitData unitdata, int currentLevel)
     {
         // 배치 불가능한 타일이면
         if (tileType == TileType.WaveIn || tileType == TileType.WaveOut
             || tileType == TileType.Lock)
         {
-           return false;
+            return false;
         }
 
         // 레벨이 타일레벨보다 부족하면
         if (currentLevel < unlockLevel)
         {
-           return false;
+            return false;
         }
         // 타일이 비어 있는지 확인
         if (occupant != null)
@@ -98,7 +101,7 @@ public class GridTile : MonoBehaviour
         }
         if (tileType == TileType.Range && unitdata.type == UnitType.Melee)
         {
-             return false;
+            return false;
         }
         return true;
     }
