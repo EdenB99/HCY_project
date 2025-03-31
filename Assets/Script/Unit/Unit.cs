@@ -8,7 +8,7 @@ public class Unit : MonoBehaviour
 {
     [Header("Unit Data Reference")]
     public UnitData unitData;
-    private UnitStats stats;
+    public UnitStats stats;
     private IAttackStrategy attackStrategy;
 
     [Header("Components")]
@@ -17,6 +17,11 @@ public class Unit : MonoBehaviour
     private Renderer unitRenderer;
     public Material transparencyMaterial; // 투명 머티리얼
     private Material originalMaterial; // 원래 머티리얼 저장
+
+    [Header("Buff Management")]
+    private List<UnitBuff> activeBuffs = new List<UnitBuff>(); // 활성화된 버프 리스트
+    private UnitStats tempStats; // 버프가 적용된 임시 스탯
+    public Action onBuffChanged; // 버프 변경 시 호출되는 이벤트
 
     [Header("Runtime Data")]
     public int killCount;
@@ -56,7 +61,7 @@ public class Unit : MonoBehaviour
             originalMaterial = unitRenderer.material; // 초기 머티리얼 저장
 
         stats = new UnitStats(unitData);
-
+        tempStats = stats;
         InitializeAttackStrategy();
     }
 
@@ -125,11 +130,11 @@ public class Unit : MonoBehaviour
     {
         if (isDead) return;
         //Sp 회복 로직
-        stats.RecoverSP(Time.deltaTime);
-        if (stats.currentSP >= stats.maxSP && CanSkill())
+        tempStats.RecoverSP(Time.deltaTime);
+        if (tempStats.currentSP >= tempStats.maxSP && CanSkill())
         {
             UseSkill();
-            stats.currentSP = 0;
+            tempStats.currentSP = 0;
         }
 
 
@@ -139,12 +144,14 @@ public class Unit : MonoBehaviour
         if (attackCooldown <= 0f && CanAttack())
         {
             StartCoroutine(Attack());
-            attackCooldown = Mathf.Max(1.0f / 3.0f, 1.0f / stats.attackSpeed);
+            attackCooldown = Mathf.Max(1.0f / 3.0f, 1.0f / tempStats.attackSpeed);
         }
 
         // 시선 처리
         if (targetEnemy != null) // targetEnemy가 null인지 확인
             RotateTowardsTarget(targetEnemy.gameObject);
+
+         onBuffChanged += InitializeUnit;
     }
 
 
@@ -157,7 +164,7 @@ public class Unit : MonoBehaviour
     {
         if (attackRangeCollider != null)
         {
-            attackRangeCollider.size = new Vector3(stats.range, 1, stats.range);
+            attackRangeCollider.size = new Vector3(tempStats.range, 1, tempStats.range);
             attackRangeCollider.isTrigger = true;
         }
     }
@@ -363,7 +370,7 @@ public class Unit : MonoBehaviour
             case DamageType.StatusEffect:
                 return baseDamage;
             default:
-                return Mathf.Max(0, baseDamage - stats.durability);
+                return Mathf.Max(0, baseDamage - tempStats.durability);
         }
     }
 
@@ -382,7 +389,7 @@ public class Unit : MonoBehaviour
         // 현재 범위 내 적 중에서 저지 가능한 적을 유지 (StoppingPower만큼 제한)
         foreach (Enemy enemy in StoppingEnemies)
         {
-            if (count >= stats.stoppingPower)
+            if (count >= tempStats.stoppingPower)
                 break;
 
             if (enemiesInRange.Contains(enemy))
@@ -397,7 +404,7 @@ public class Unit : MonoBehaviour
         // 새로운 적을 추가 (StoppingPower를 초과하지 않도록 제한)
         foreach (Enemy enemy in enemiesInRange)
         {
-            if (updatedStoppingEnemies.Count >= stats.stoppingPower)
+            if (updatedStoppingEnemies.Count >= tempStats.stoppingPower)
                 break;
 
             if (!updatedStoppingEnemies.Contains(enemy) && !enemy.IsStopped)
@@ -476,6 +483,68 @@ public class Unit : MonoBehaviour
         slowMultiplier = 1.0f; // 원래 속도로 복구
     }
 
+    /// <summary>
+    /// 버프 추가 메서드
+    /// </summary>
+    public void AddBuff(UnitBuff newBuff)
+    {
+        // 동일한 버프가 이미 존재하지 않을 경우 추가
+        if (!activeBuffs.Exists(buff => buff.buffName == newBuff.buffName))
+        {
+            activeBuffs.Add(newBuff);
+            StartCoroutine(Coroutine_BuffEnd(newBuff));
+            UpdateTempStats();
+            onBuffChanged?.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// 버프 종료 코루틴
+    /// </summary>
+    private IEnumerator Coroutine_BuffEnd(UnitBuff buff)
+    {
+        yield return new WaitForSeconds(buff.duration);
+        activeBuffs.Remove(buff);
+        UpdateTempStats();
+        onBuffChanged?.Invoke();
+    }
+
+    /// <summary>
+    /// 버프 변경 시 임시 스탯 업데이트
+    /// </summary>
+    private void UpdateTempStats()
+    {
+        // 기본 stats를 복사
+        tempStats = stats;
+
+        // 활성화된 버프를 적용
+        foreach (var buff in activeBuffs)
+        {
+            switch (buff.statName)
+            {
+                case "attackPower":
+                    tempStats.attackPower += Mathf.RoundToInt(stats.attackPower * buff.value);
+                    break;
+                case "durability":
+                    tempStats.durability += Mathf.RoundToInt(stats.durability * buff.value);
+                    break;
+                case "critChance":
+                    tempStats.critChance += buff.value;
+                    break;
+                // 필요한 스탯 추가
+                default:
+                    Debug.LogWarning($"Unknown stat name: {buff.statName}");
+                    break;
+            }
+        }
+    }
+    /// <summary>
+    /// 현재 스탯 반환 (버프 적용된 상태)
+    /// </summary>
+    public UnitStats GetCurrentStats()
+    {
+        return tempStats;
+    }
     //---------------------------------------------------------------------------
     //스킬 관련 메소드
     private void UseSkill()

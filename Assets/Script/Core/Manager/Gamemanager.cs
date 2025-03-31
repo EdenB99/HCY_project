@@ -13,7 +13,7 @@ public class Gamemanager : MonoBehaviour
     public GridManager gridManager;
     public SelectionManager selectionManager;
     public ShopManager shopManager;
-    public SynergieManager synergyManager;
+    public SynergyManager synergyManager;
 
     private void Awake()
     {

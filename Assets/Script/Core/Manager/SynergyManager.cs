@@ -1,113 +1,77 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
-public class SynergieManager : MonoBehaviour
+[System.Serializable]
+public class SynergyEntry
 {
-    public static SynergieManager Instance { get; private set; }
+    public SynergyDatabase synergyData; // 시너지 데이터
+    public HashSet<Unit> units;         // 해당 시너지에 속한 유닛들
+
+    public SynergyEntry(SynergyDatabase synergyData)
+    {
+        this.synergyData = synergyData;
+        this.units = new HashSet<Unit>();
+    }
+}
+public class SynergyManager : MonoBehaviour
+{
+    public static SynergyManager Instance { get; private set; }
 
     [Header("Synergy Database")]
-    public List<SynergyDatabase> synergies = new List<SynergyDatabase>();
-
-    // 해당 시너지 소속 유닛들을 모은 딕셔너리
-    [SerializeField]
-    private Dictionary<string, HashSet<Unit>> synergyUnits =
-        new Dictionary<string, HashSet<Unit>>();
-    // 해당 시너지의 레벨을 기록한 딕셔너리
-    private Dictionary<string, int> synergyLevels = new Dictionary<string, int>();
+    public List<SynergyEntry> synergyEntries = new List<SynergyEntry>(); // 시너지 데이터와 유닛 관리
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-        //synergies의 시너지들에 
-        
+        else Destroy(gameObject);
     }
+
     /// <summary>
     /// SynergyManager 초기화
     /// </summary>
     /// <param name="synergyList">GameConfig에서 받은 SynergyDatabase 리스트</param>
     public void InitializeSynergies(List<SynergyDatabase> synergyList)
     {
-        synergies = synergyList;
-        foreach (var synergy in synergies)
+        synergyEntries.Clear();
+        foreach (var synergy in synergyList)
+            synergyEntries.Add(new SynergyEntry(synergy));
+
+    }
+
+    public void AddUnit(Unit unit) => UpdateUnitInSynergy(unit, true);
+    public void RemoveUnit(Unit unit) => UpdateUnitInSynergy(unit, false);
+
+    private void UpdateUnitInSynergy(Unit unit, bool isAdding)
+    {
+        foreach (var synergy in unit.unitData.synergyList)
         {
-            synergyUnits[synergy.synergyName] = new HashSet<Unit>();
-            synergyLevels[synergy.synergyName] = 0;
+            var entry = synergyEntries.Find(e => e.synergyData.synergyName == synergy.synergyName);
+            if (entry == null) continue;
+
+            if (isAdding ? entry.units.Add(unit) : entry.units.Remove(unit))
+            {
+                UpdateSynergyLevel(entry);
+            }
         }
     }
-    /// <summary>
-    /// 유닛을 시너지에 추가
-    /// </summary>
-    public void AddUnit(Unit unit)
+
+    private void UpdateSynergyLevel(SynergyEntry entry)
     {
-        foreach (var synergy in unit.unitData.synergyList) //유닛이 가진 시너지 리스트 순회
-        {
-            if (!synergyUnits.ContainsKey(synergy.synergyName)) continue;
+        var synergy = entry.synergyData;
+        var units = entry.units;
 
-            HashSet<Unit> units = synergyUnits[synergy.synergyName];
-
-            if (units.Add(unit)) UpdateSynergyLevel(synergy.synergyName);
-        }
+        int level = CalculateSynergyLevel(units.Count, synergy.thresholds);
+        SynergyEffectHandler.ApplySynergyEffect(synergy.synergyName, units, level);
     }
-    /// <summary>
-    /// 유닛을 기반으로 시너지에서 제거
-    /// </summary>
-    public void RemoveUnit(Unit unit)
-    {
-        foreach (var synergy in unit.unitData.synergyList) //유닛이 가진 시너지 리스트 순회
-        {
-            if (!synergyUnits.ContainsKey(synergy.synergyName)) continue;
 
-            HashSet<Unit> units = synergyUnits[synergy.synergyName];
-
-            if (units.Remove(unit)) UpdateSynergyLevel(synergy.synergyName);
-        }
-    }
-    /// <summary>
-    /// 시너지 레벨 계산 및 효과 적용
-    /// </summary>
-    private void UpdateSynergyLevel(string synergyName)
-    {
-        //해당 시너지가 시너지그룹에 있는지 확인
-        var synergy = synergies.Find(s => s.synergyName == synergyName);
-        if (synergy == null) return;
-
-        //해당 시너지에 속한 유닛그룹 검색 후 시너지 레벨 조정
-        HashSet<Unit> units = synergyUnits[synergyName];
-        int level = CalculateSynergyLevel(units.Count, synergy.activationLevels);
-        synergyLevels[synergyName] = level;
-
-        // 효과 적용
-        ApplySynergyEffectToAll(synergyName, level);
-    }
-    /// <summary>
-    /// 시너지 레벨 계산
-    /// </summary>
-    private int CalculateSynergyLevel(int unitCount, List<int> activationLevels)
+    private int CalculateSynergyLevel(int unitCount, List<int> thresholds)
     {
         int level = 0;
-        for (int i = 0; i < activationLevels.Count; i++)
+        for (int i = 0; i < thresholds.Count; i++)
         {
-            if (unitCount >= activationLevels[i])
+            if (unitCount >= thresholds[i])
                 level = i + 1;
         }
         return level;
-    }
-    /// <summary>
-    /// 모든 유닛에 효과 적용
-    /// </summary>
-    private void ApplySynergyEffectToAll(string synergyName, int level)
-    {
-        var units = synergyUnits[synergyName];
-        foreach (var unit in units)
-        {
-            SynergyEffectHandler.ApplyEffect(unit, synergyName, level);
-        }
     }
 }

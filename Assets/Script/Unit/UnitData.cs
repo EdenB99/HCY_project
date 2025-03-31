@@ -45,6 +45,22 @@ public class UnitData : ScriptableObject
     public int stoppingPower; //저지력 (근접유닛만 유효)
 }
 
+[System.Serializable]
+public struct UnitBuff
+{
+    public string buffName; // 버프 이름
+    public string statName; // 영향을 미치는 스탯 이름
+    public float value; // 버프 값
+    public float duration; // 지속 시간
+
+    public UnitBuff(string buffName, string statName, float value, float duration)
+    {
+        this.buffName = buffName;
+        this.statName = statName;
+        this.value = value;
+        this.duration = duration;
+    }
+}
 
 public struct UnitStats
 {

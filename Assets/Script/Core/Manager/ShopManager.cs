@@ -176,12 +176,11 @@ public class ShopManager : MonoBehaviour
             cumulativeProbability += rate.spawnRate;
             if (randomValue <= cumulativeProbability)
             {
-                // Filter available units based on active synergies
+                var allSynergies = SynergyManager.Instance.synergyEntries.ConvertAll(entry => entry.synergyData);
+                // 해당 비용 레벨의 유닛 중 랜덤으로 선택
                 var units = shopData.availableUnits.FindAll(u =>
                     u.costLevel == rate.costLevel &&
-                    u.synergyList.Exists(synergy => SynergieManager.Instance.synergies.Contains(synergy))
-                );
-
+                    u.synergyList.Exists(synergy => allSynergies.Contains(synergy)));
                 if (units.Count > 0)
                 {
                     return units[Random.Range(0, units.Count)];

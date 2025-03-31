@@ -123,7 +123,7 @@ public class GridManager : MonoBehaviour
         Unit unitComponent = unitObject.GetComponent<Unit>();
         MoveUnitToTile(unitComponent, spawnTile);
         placedUnits.Add(unitComponent); 
-        SynergieManager.Instance.AddUnit(unitComponent);
+        SynergyManager.Instance.AddUnit(unitComponent);
         CheckAndMergeUnits(unitComponent);
     }
     /// <summary>
@@ -158,7 +158,7 @@ public class GridManager : MonoBehaviour
         GridTile previousTile = GetTile(unit.currentGridTile);
         if (previousTile != null) previousTile.RemoveUnit();
 
-        SynergieManager.Instance.RemoveUnit(unit);
+        SynergyManager.Instance.RemoveUnit(unit);
         Destroy(unit.gameObject);
     }
 

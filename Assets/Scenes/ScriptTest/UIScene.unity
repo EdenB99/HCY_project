@@ -787,41 +787,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1533942621}
     m_Modifications:
-    - target: {fileID: 32399327499776858, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 311433197779062804, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
       propertyPath: m_Name
       value: SynergyUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666080569922176110, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666080569922176110, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666080569922176110, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666080569922176110, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -25
-      objectReference: {fileID: 0}
-    - target: {fileID: 3906320346170017354, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3906320346170017354, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3906320346170017354, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4258305553439945583, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
       propertyPath: m_Pivot.x
@@ -901,10 +869,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4258305553439945583, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8739412164773536322, guid: f28dd9830041c8344b0e25d6f4f2c964, type: 3}
-      propertyPath: synergies.Array.size
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
