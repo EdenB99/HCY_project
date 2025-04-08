@@ -182,12 +182,9 @@ public class ShopManager : MonoBehaviour
                     u.costLevel == rate.costLevel &&
                     u.synergyList.Exists(synergy => allSynergies.Contains(synergy)));
                 if (units.Count > 0)
-                {
                     return units[Random.Range(0, units.Count)];
-                }
             }
         }
-
         return null;
     }
 

@@ -15,6 +15,9 @@ public class SynergyEntry
 }
 public class SynergyManager : MonoBehaviour
 {
+    [Header("Components")]
+    public GameObject synergyPanel;
+    public Transform scrollContent;
     public static SynergyManager Instance { get; private set; }
 
     [Header("Synergy Database")]
