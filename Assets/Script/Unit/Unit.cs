@@ -117,6 +117,11 @@ public class Unit : MonoBehaviour
                 deadEnemy.StopState(false);
                 StoppingEnemies.Remove(deadEnemy);
             }
+            // 현재 타겟이 사망한 적이라면 null로 설정
+            if (targetEnemy == deadEnemy)
+            {
+                targetEnemy = null;
+            }
 
             // 가장 가까운 적 다시 찾기
             FindNearestTarget();
@@ -148,10 +153,16 @@ public class Unit : MonoBehaviour
         }
 
         // 시선 처리
-        if (targetEnemy != null) // targetEnemy가 null인지 확인
-            RotateTowardsTarget(targetEnemy.gameObject);
+        if (targetEnemy == null || targetEnemy.isDead || !enemiesInRange.Contains(targetEnemy))
+        {
+            targetEnemy = null;
+            FindNearestTarget();
+        }
 
-         onBuffChanged += InitializeUnit;
+        // 타겟이 있을 경우 회전
+        if (targetEnemy != null) RotateTowardsTarget(targetEnemy.gameObject);
+
+        onBuffChanged += InitializeUnit;
     }
 
 
@@ -200,14 +211,9 @@ public class Unit : MonoBehaviour
 
     private void RotateTowardsTarget(GameObject targetObject)
     {
-        if (unitAC == null || isAttacking) return;
-
-        Vector3 targetPosition;
-        if (targetObject == null)
-            targetPosition = Vector3.zero;
-        else
-            targetPosition = targetObject.transform.position;
-        Vector3 direction = (targetPosition - unitAC.ACtransfrom.position).normalized;
+        if (unitAC == null || targetObject == null) return;
+        Vector3 targetPosition = targetObject.transform.position;
+        Vector3 direction = (targetPosition - transform.position).normalized;
         if (direction != Vector3.zero)
         {
             direction.y = 0; // Y축 회전 방지
@@ -282,14 +288,15 @@ public class Unit : MonoBehaviour
         // OverlapBox로 감지된 콜라이더 가져오기
         Collider[] colliders = Physics.OverlapBox(boxCenter, boxSize, boxRotation);
 
+        enemiesInRange.Clear();
+
         foreach (Collider collider in colliders)
         {
             Enemy enemy = collider.GetComponent<Enemy>();
             if (enemy != null && !enemiesInRange.Contains(enemy))
-            {
                 enemiesInRange.Add(enemy); // 중복되지 않도록 추가
-            }
         }
+        FindNearestTarget();
     }
 
     /// <summary>
@@ -325,10 +332,10 @@ public class Unit : MonoBehaviour
     private IEnumerator Attack()
     {
         isAttacking = true;
-        Debug.Log(targetEnemy.name);
         // 공격 애니메이션 실행
         unitAC.PlayAttackAnimation(UnityEngine.Random.Range(0, 1));
         OnAttacked?.Invoke(this, targetEnemy); // OnAttacked 호출
+        InitializeUnit();
         yield return null;
     }
 
@@ -495,6 +502,13 @@ public class Unit : MonoBehaviour
             StartCoroutine(Coroutine_BuffEnd(newBuff));
             UpdateTempStats();
             onBuffChanged?.Invoke();
+        }
+        else
+        {
+            // 동일한 버프가 존재할 경우, 기존 버프를 대체
+            var existingBuff = activeBuffs.Find(buff => buff.buffName == newBuff.buffName);
+            existingBuff.value = newBuff.value; // 새로운 값으로 대체
+            existingBuff.duration = newBuff.duration; // 새로운 지속 시간으로 대체
         }
     }
 

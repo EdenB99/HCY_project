@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: S01_Phlemonia
   m_EditorClassIdentifier: 
   synergyName: "\uD50C\uB808\uBAA8\uB2C8\uC544 \uC81C\uAD6D"
+  synergyCode: S01_Phlemonia
   description: "\uD3F4\uB808\uBAA8\uB2C8\uC544\uC758 \uC601\uC6C5\uB4E4\uC740 \uC804\uC7A5\uC758
     \uCE58\uC5F4\uD568\uC744 \uBD88\uAF43\uC0BC\uC544 \uC804\uD22C\uB97C \uC774\uC5B4\uAC11\uB2C8\uB2E4.\r\n\uC2DC\uB108\uC9C0\uAC00
     \uD65C\uC131\uD654 \uB41C \uC774\uD6C4 \uCC98\uCE58\uB41C \uC801 \uC720\uB2DB\uC5D0
     \uBE44\uB840\uD558\uC5EC \uC18C\uC18D \uC720\uB2DB\uB4E4\uC774 \uBC84\uD504\uB97C
     \uC5BB\uACE0,\r\n\uAC00\uC7A5 (\uC131\uAE09/\uC544\uC774\uD15C\uC218/\uB4F1\uAE09)\uC774
     \uB192\uC740 \uC720\uB2DB\uC740 \uB450\uBC30\uB85C \uBC84\uD504\uB97C \uC5BB\uC2B5\uB2C8\uB2E4."
-  icon: {fileID: 21300000, guid: c90b04dbb696a8a4bbf77bad043ed21e, type: 3}
-  activeLevel: 0
+  icon: {fileID: 21300000, guid: ff885d2457ed2194885eb7115ae6f535, type: 3}
   thresholds: 030000000600000009000000
   effects: []
   synergyType: 0

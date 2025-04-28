@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
     private bool isAttacking = false;
     private bool isStopped = false;
     public bool IsStopped => isStopped;
-    private bool isDead = false;
+    public bool isDead = false;
     private bool isStunned = false;
     private bool isRooted = false;
     private float slowMultiplier = 1.0f;

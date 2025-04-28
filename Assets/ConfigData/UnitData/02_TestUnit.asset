@@ -21,13 +21,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d668c7985f927c5468ef034581c93a02, type: 2}
   type: 2
   maxHP: 10
-  currentHP: 10
   maxSP: 10
-  currentSP: 10
-  attackPower: 10
-  magicPower: 10
-  attackSpeed: 10
-  range: 10
+  attackPower: 1
+  focusPower: 0
+  attackSpeed: 2
+  range: 1
   critChance: 10
   lifesteal: 10
   durability: 10
+  stoppingPower: 0

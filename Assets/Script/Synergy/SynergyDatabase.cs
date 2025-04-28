@@ -16,15 +16,21 @@ public class SynergyEffect
     public float value; // 효과 값
 }
 
+public enum SynergyCode
+{
+    S01_Phlemonia,
+
+}
 
 [CreateAssetMenu(fileName = "SynergyData", menuName = "Synergy/Create New SynergyData")]
 public class SynergyDatabase : ScriptableObject
 {
     public string synergyName;             // 시너지 이름
+    public SynergyCode synergyCode;             // 시너지 코드 
+
     [TextArea(3, 5)]
     public string description;            // 시너지 설명
     public Sprite icon;                   // 시너지 아이콘
-    public int activeLevel;              //현재 활성화된 시너지 레벨
     public List<int> thresholds;    // 활성화 레벨 (예: 2/4/6)
     public List<SynergyEffect> effects;   // 각 레벨별 효과
     public SynergyType synergyType;        // 시너지 타입 (지역, 클래스, 고유)
@@ -36,5 +42,5 @@ public class SynergyDatabase : ScriptableObject
     public bool ValidateData()
     {
         return thresholds.Count == effects.Count;
-    }   
+    }
 }
