@@ -1,9 +1,29 @@
 fileFormatVersion: 2
-guid: 69a0e872b2360fe4484628155f1a0f7e
+guid: 392d2ff526bd7bd41bc17454d422f091
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 1001
+    second: {fileID: 2100000, guid: efafa895050674746b9f1af9a9e77374, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 1001.001
+    second: {fileID: 2100000, guid: efafa895050674746b9f1af9a9e77374, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GenshinMaterial.Default
+    second: {fileID: 2100000, guid: efafa895050674746b9f1af9a9e77374, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Outline
+    second: {fileID: 2100000, guid: efafa895050674746b9f1af9a9e77374, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
