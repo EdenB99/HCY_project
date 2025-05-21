@@ -43,6 +43,8 @@ public class UnitData : ScriptableObject
     public float lifesteal; // 피해 흡혈 (%)
     public int durability; // 내구력 (피해 감소율)
     public int stoppingPower; //저지력 (근접유닛만 유효)
+
+    public ProjectileEffectGroup projectileEffectGroup;
 }
 
 [System.Serializable]

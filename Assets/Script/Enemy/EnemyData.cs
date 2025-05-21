@@ -26,6 +26,7 @@ public class EnemyData : ScriptableObject
     [Header("Skill Settings")]
     public string skillName;         // 적의 기술 이름
     public GameObject enemyPrefab;   // 해당 적 유닛의 프리팹
+    public ProjectileEffectGroup projectileEffectGroup;
 }
 public struct EnemyStats
 {

@@ -20,7 +20,7 @@ public class Unit : MonoBehaviour
 
     [Header("Buff Management")]
     private List<UnitBuff> activeBuffs = new List<UnitBuff>(); // 활성화된 버프 리스트
-    private UnitStats tempStats; // 버프가 적용된 임시 스탯
+    public UnitStats tempStats; // 버프가 적용된 임시 스탯
     public Action onBuffChanged; // 버프 변경 시 호출되는 이벤트
 
     [Header("Runtime Data")]

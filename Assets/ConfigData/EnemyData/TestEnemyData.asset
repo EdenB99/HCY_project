@@ -26,3 +26,15 @@ MonoBehaviour:
   lifesteal: 2
   skillName: asdasd
   enemyPrefab: {fileID: 7292498583778804622, guid: 97fb36ba92a357840a4cea83779a97c4, type: 3}
+  projectileEffectGroup:
+    effectName: 
+    projectilePrefab: {fileID: 0}
+    muzzleEffectPrefab: {fileID: 0}
+    hitEffectPrefab: {fileID: 0}
+    shootClip: {fileID: 0}
+    hitClip: {fileID: 0}
+    speed: 30
+    damageType: 0
+    isTargeting: 0
+    rotSpeed: 100
+    effectDelay: 1

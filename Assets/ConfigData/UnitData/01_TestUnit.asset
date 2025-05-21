@@ -22,11 +22,23 @@ MonoBehaviour:
   type: 1
   maxHP: 10
   maxSP: 10
-  attackPower: 1
+  attackPower: 10
   focusPower: 0
   attackSpeed: 2
-  range: 3
+  range: 5
   critChance: 10
   lifesteal: 10
   durability: 10
   stoppingPower: 0
+  projectileEffectGroup:
+    effectName: Fireball
+    projectilePrefab: {fileID: 8378503196372639160, guid: e69e1d7a4861d9346a6cd7268b8605c7, type: 3}
+    muzzleEffectPrefab: {fileID: 8172394614802003838, guid: 98eaf8c5f5b37c945905e7fc1412d721, type: 3}
+    hitEffectPrefab: {fileID: 4186470608034871016, guid: 49891652d29fe5c479c469cd22c7e5d9, type: 3}
+    shootClip: {fileID: 0}
+    hitClip: {fileID: 0}
+    speed: 50
+    damageType: 1
+    isTargeting: 0
+    rotSpeed: 50
+    effectDelay: 1
