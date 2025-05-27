@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216eb38f582177e46afd0d2f4ff403df, type: 3}
+  m_Name: Kashtain_Data
+  m_EditorClassIdentifier: 
+  unitName: Kashtain
+  costLevel: 1
+  starLevel: 1
+  image: {fileID: 21300000, guid: fd0a92d859a16e240868e1c2e9a47609, type: 3}
+  unitPrefab: {fileID: 5434685673209402010, guid: 2503fdc000e44c846aa17cf8b19b47d1, type: 3}
+  synergyList:
+  - {fileID: 11400000, guid: d668c7985f927c5468ef034581c93a02, type: 2}
+  type: 0
+  maxHP: 10
+  maxSP: 10
+  attackPower: 5
+  focusPower: 0
+  attackSpeed: 0.5
+  range: 2
+  critChance: 10
+  lifesteal: 10
+  durability: 10
+  stoppingPower: 1
+  projectileEffectGroup:
+    effectName: 
+    projectilePrefab: {fileID: 0}
+    muzzleEffectPrefab: {fileID: 0}
+    hitEffectPrefab: {fileID: 0}
+    shootClip: {fileID: 0}
+    hitClip: {fileID: 0}
+    speed: 10
+    damageType: 0
+    isTargeting: 0
+    rotSpeed: 0
+    effectDelay: 1
